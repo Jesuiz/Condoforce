@@ -15,10 +15,31 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('country', 2);
+            $table->enum('doc_type', ['DNI', 'CE', 'PTP', 'Otro'])->nullable();
+            $table->string('document')->unique()->nullable();
+            $table->unsignedBigInteger('cellphone')->nullable();
+            $table->mediumText('address')->nullable();
+
+            $table->unsignedBigInteger('condominium_id');
+            $table->foreign('condominium_id')->references('id')->on('condominiums')->onDelete('cascade');
+
+            $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('is_active')->nullable()->default(true);
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        Schema::create('roles', function (Blueprint $table) {
+            $table->unsignedBigInteger('id')->primary();
+            $table->enum('name', ['Residente', 'Vigilancia', 'Mantenimiento', 'Supervisión', 'Delegación', 'Administración', 'Gerencia']);
+            $table->decimal('salary', 10, 2);
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('condominium_id');
+            $table->foreign('condominium_id')->references('id')->on('condominiums')->onDelete('cascade');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -43,6 +64,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('roles');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

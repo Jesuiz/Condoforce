@@ -11,16 +11,7 @@ class Inventory extends Model
     
     protected $table = 'inventory';
 
-    protected $fillable = [
-        'name',
-        'description',
-        'units',
-        'amount',
-        'expiration',
-        'user_id',
-        'condominium_id',
-        'category_id'
-    ];
+    protected $fillable = ['name','description','units','amount','expiration','user_id','condominium_id','category_id'];
     
     public function user()
     {

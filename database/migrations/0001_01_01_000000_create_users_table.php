@@ -34,13 +34,14 @@ return new class extends Migration
 
         Schema::create('roles', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
-            $table->enum('name', ['Residente', 'Vigilancia', 'Mantenimiento', 'Supervisión', 'Delegación', 'Administración', 'Gerencia']);
+            $table->enum('name', ['Residente', 'Vigilante', 'Mantenimiento', 'Supervisor', 'Delegado', 'Administrador', 'Gerente']);
             $table->decimal('salary', 10, 2);
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('condominium_id');
             $table->foreign('condominium_id')->references('id')->on('condominiums')->onDelete('cascade');
+            $table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

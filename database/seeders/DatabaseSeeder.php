@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Condominium;
+use App\Models\Role;
 use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Report;
@@ -42,18 +43,20 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Paso 3: Crear usuarios adicionales
-        User::factory(25)->create(['condominium_id' => fn() => $condominiums->random()->id]);
+        User::factory(24)->create(['condominium_id' => fn() => $condominiums->random()->id]);
 
         // Paso 4: Crear categorías
         Category::truncate();
         Category::factory()->count(8)->create();
 
         // Paso 5: Crear inventarios, reportes y tareas
+        Role::truncate();
         Inventory::truncate();
         Report::truncate();
         Task::truncate();
         $faker = Faker::create();
         User::all()->each(function ($user) use ($faker) {
+            Role::factory()->count(1)->create(['user_id' => $user->id]);
             Inventory::factory()->count($faker->numberBetween(0, 1))->create(['user_id' => $user->id]);
             Report::factory()->count($faker->numberBetween(0, 1))->create(['user_id' => $user->id]);
             Task::factory()->count($faker->numberBetween(0, 2))->create(['user_id' => $user->id]);

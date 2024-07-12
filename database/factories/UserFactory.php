@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Condominium;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -31,6 +32,18 @@ class UserFactory extends Factory
             'is_active' => $this->faker->boolean(),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            Role::create([
+                'name' => $this->faker->randomElement(['Residente', 'Vigilante', 'Mantenimiento', 'Supervisor', 'Delegado', 'Administrador', 'Gerente']),
+                'salary' => $this->faker->randomFloat(2, 1000, 5000),
+                'user_id' => $user->id,
+                'condominium_id' => $user->condominium_id,
+            ]);
+        });
     }
 
     public function unverified(): static

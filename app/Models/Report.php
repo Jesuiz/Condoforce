@@ -10,15 +10,7 @@ class Report extends Model
     use HasFactory;
     
     protected $table = 'reports';
-
-    protected $fillable = [
-        'name',
-        'description',
-        'area',
-        'user_id',
-        'condominium_id'
-    ];
-
+    protected $fillable = ['name','description','area','user_id','condominium_id'];
     public static $areas = ['Residente', 'Vigilancia', 'Mantenimiento', 'Supervisión', 'Delegación', 'Administración', 'Gerencia'];
 
     public static function boot()
@@ -26,7 +18,7 @@ class Report extends Model
         parent::boot();
 
         static::creating(function ($task) {
-            if (!in_array($task->area, self::$areas)) {
+            if (!$task->area || !in_array($task->area, self::$areas)) {
                 throw new \InvalidArgumentException("Invalid area: {$task->area}");
             }
         });

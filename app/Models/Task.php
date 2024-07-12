@@ -10,18 +10,7 @@ class Task extends Model
     use HasFactory;
     
     protected $table = 'tasks';
-
-    protected $fillable = [
-        'name',
-        'description',
-        'area',
-        'status',
-        'time_limit',
-        'reason',
-        'user_id',
-        'condominium_id'
-    ];
-
+    protected $fillable = ['name','description','area','status','time_limit','reason','user_id','condominium_id'];
     public static $areas = ['Residente', 'Vigilancia', 'Mantenimiento', 'Supervisión', 'Delegación', 'Administración', 'Gerencia'];
     public static $statuses = ['Asignado', 'En Desarrollo', 'Finalizado', 'Fallido'];
 
@@ -43,5 +32,10 @@ class Task extends Model
     public function condominium()
     {
         return $this->belongsTo(Condominium::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -10,13 +10,7 @@ class Category extends Model
     use HasFactory;
 
     protected $table = 'categories';
-    
-    protected $fillable = [
-        'name',
-        'description',
-        'area'
-    ];
-    
+    protected $fillable = ['name','description','area'];
     public static $areas = ['Residente', 'Vigilancia', 'Mantenimiento', 'Supervisión', 'Delegación', 'Administración', 'Gerencia'];
 
     public static function boot()

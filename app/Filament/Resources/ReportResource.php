@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ReportResource extends Resource
 {
+    protected static ?int $navigationSort = 4;
     protected static ?string $model = Report::class;
     protected static ?string $navigationLabel = 'Incidencias';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
@@ -38,11 +39,6 @@ class ReportResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')->label('Fecha')
-                ->dateTime(),
-                Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
-                    ->searchable()->sortable(),
-
                 Tables\Columns\TextColumn::make('area')->label('Área')
                     ->searchable()
                     ->icon(fn (string $state): string => match ($state) {
@@ -51,7 +47,10 @@ class ReportResource extends Resource
                         'Administración' => 'heroicon-o-calculator', 'Gerencia' => 'heroicon-o-star',
                         'Delegación' => 'heroicon-o-user-group', default => 'gray',
                     }),
-
+                Tables\Columns\TextColumn::make('created_at')->label('Fecha')
+                ->dateTime(),
+                Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
+                    ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('name')->label('Incidencia')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')->label('Descripción')
@@ -84,5 +83,10 @@ class ReportResource extends Resource
             'create' => Pages\CreateReport::route('/create'),
             'edit' => Pages\EditReport::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

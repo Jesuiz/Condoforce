@@ -24,6 +24,7 @@ class User extends Authenticatable
         'cellphone',
         'address',
         'condominium_id',
+        'profile_img'
     ];
 
     protected $hidden = [

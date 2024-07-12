@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('country', 2);
-            $table->enum('doc_type', ['DNI', 'CE', 'PTP', 'Otro'])->nullable();
+            $table->enum('doc_type', ['DNI', 'CE', 'PTP', 'PAS']);
             $table->string('document')->unique()->nullable();
             $table->unsignedBigInteger('cellphone')->nullable();
             $table->mediumText('address')->nullable();
+            $table->string('profile_img')->nullable();
 
             $table->unsignedBigInteger('condominium_id');
             $table->foreign('condominium_id')->references('id')->on('condominiums')->onDelete('cascade');

@@ -16,14 +16,11 @@ class CondominiumFactory extends Factory
 
         return [
             'name' => $condoName,
-            'address' => $this->faker->address(),
+            'address' => $this->faker->streetAddress(),
             'is_active' => $this->faker->boolean(80),
         ];
     }
 
-    /**
-     * Indicate that the condominium is inactive.
-     */
     public function inactive()
     {
         return $this->state(function (array $attributes) {
@@ -33,9 +30,6 @@ class CondominiumFactory extends Factory
         });
     }
 
-    /**
-     * Indicate that the condominium is active.
-     */
     public function active()
     {
         return $this->state(function (array $attributes) {

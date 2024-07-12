@@ -15,15 +15,19 @@ use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        Condominium::factory()->count(1)->create();
-        Condominium::factory()->inactive()->create();
-        Condominium::factory()->active()->count(2)->create();
+        echo "DatabaseSeeder iniciado...\n\n";
 
+        // Paso 1: Crear condominios
+        Condominium::truncate();
+        Condominium::factory()->count(6)->create();
+        Condominium::factory()->inactive()->count(1)->create();
+        Condominium::factory()->active()->count(3)->create();
+
+        // Paso 2: Crear usuario administrador
+        User::truncate();
+        $condominiums = Condominium::all();
         DB::table('users')->insert([
             'name' => 'Jesús Ruiz',
             'email' => 'jesuizmail@gmail.com',
@@ -33,21 +37,28 @@ class DatabaseSeeder extends Seeder
             'document' => '005180167',
             'cellphone' => '935035069',
             'address' => 'Edif. 2, Dpto. 503, Cond. Los Pinos - El Agustino',
-            'condominium_id' => 1,
+            'profile_img' => 'public/profile_img/jesus_ruiz.png',
+            'condominium_id' => $condominiums->random()->id,
         ]);
 
-        User::factory(10)->create()->each(function ($user) use ($condominiums) {
-            $user->condominium_id = $condominiums->random()->id;
-            $user->save();
-        });
+        // Paso 3: Crear usuarios adicionales
+        User::factory(25)->create(['condominium_id' => fn() => $condominiums->random()->id]);
 
-        Category::factory()->count(5)->create();
+        // Paso 4: Crear categorías
+        Category::truncate();
+        Category::factory()->count(8)->create();
 
+        // Paso 5: Crear inventarios, reportes y tareas
+        Inventory::truncate();
+        Report::truncate();
+        Task::truncate();
         $faker = Faker::create();
         User::all()->each(function ($user) use ($faker) {
-            Inventory::factory()->count($faker->numberBetween(1, 5))->create(['user_id' => $user->id]);
-            Report::factory()->count($faker->numberBetween(0, 3))->create(['user_id' => $user->id]);
-            Task::factory()->count($faker->numberBetween(0, 3))->create(['user_id' => $user->id]);
+            Inventory::factory()->count($faker->numberBetween(0, 1))->create(['user_id' => $user->id]);
+            Report::factory()->count($faker->numberBetween(0, 1))->create(['user_id' => $user->id]);
+            Task::factory()->count($faker->numberBetween(0, 2))->create(['user_id' => $user->id]);
         });
+
+        echo "DatabaseSeeder finalizado.\n";
     }
 }

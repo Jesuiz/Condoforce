@@ -17,7 +17,7 @@ return new class extends Migration
             $table->longText('description');
             $table->integer('units')->default(1);
             $table->decimal('amount', 10, 2);
-            $table->integer('expiration');
+            $table->date('expiration');
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

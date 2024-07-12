@@ -25,6 +25,7 @@ use Rinvex\Country\CountryLoader;
 
 class UserResource extends Resource
 {
+    protected static ?int $navigationSort = 1;
     protected static ?string $model = User::class;
     protected static ?string $navigationLabel = 'Usuarios';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
@@ -78,7 +79,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Correo')
-                    ->searchable(),
+                    ->searchable()->copyable()->copyMessage('Copiado')->copyMessageDuration(1500),
                 Tables\Columns\TextColumn::make('cellphone')->label('Teléfono')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
@@ -89,7 +90,7 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('address')->label('Dirección')
-                    ->searchable(),
+                    ->searchable()->limit(30),
             ])
             ->filters([
                 //
@@ -118,5 +119,10 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

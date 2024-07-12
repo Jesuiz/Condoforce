@@ -19,10 +19,13 @@ class InventoryFactory extends Factory
             'description' => $this->faker->paragraph(),
             'units' => $this->faker->numberBetween(1, 100),
             'amount' => $this->faker->randomFloat(2, 10, 1000),
-            'expiration' => $this->faker->numberBetween(1, 72),
-            'user_id' => User::factory(),
-            'condominium_id' => Condominium::factory(),
-            'category_id' => Category::factory(),
+            'expiration' => $this->faker->dateTimeBetween('now', '+5 years')->format('Y-m-d'),
+            'user_id' => function () {
+                return \App\Models\User::inRandomOrder()->first()->id; },
+            'condominium_id' => function () {
+                return \App\Models\Condominium::inRandomOrder()->first()->id; },
+            'category_id' => function () {
+                return \App\Models\Category::inRandomOrder()->first()->id; },
         ];
     }
 }

@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListCondominium extends ListRecords
 {
     protected static string $resource = CondominiumResource::class;
+    protected static ?string $title = 'Condominios';
 
     protected function getHeaderActions(): array
     {

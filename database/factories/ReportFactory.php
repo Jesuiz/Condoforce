@@ -17,8 +17,10 @@ class ReportFactory extends Factory
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
             'area' => $this->faker->randomElement(Report::$areas),
-            'user_id' => \App\Models\User::factory(),
-            'condominium_id' => \App\Models\Condominium::factory(),
+            'user_id' => function () {
+                return \App\Models\User::inRandomOrder()->first()->id; },
+            'condominium_id' => function () {
+                return \App\Models\Condominium::inRandomOrder()->first()->id; },
         ];
     }
 }

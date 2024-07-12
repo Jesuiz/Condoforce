@@ -20,8 +20,10 @@ class TaskFactory extends Factory
             'status' => $this->faker->randomElement(Task::$statuses),
             'time_limit' => $this->faker->numberBetween(1, 72),
             'reason' => $this->faker->optional()->sentence,
-            'user_id' => \App\Models\User::factory(),
-            'condominium_id' => \App\Models\Condominium::factory(),
+            'user_id' => function () {
+                return \App\Models\User::inRandomOrder()->first()->id; },
+            'condominium_id' => function () {
+                return \App\Models\Condominium::inRandomOrder()->first()->id; },
         ];
     }
 }

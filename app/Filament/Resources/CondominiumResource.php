@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CondominiumResource extends Resource
 {
+    protected static ?int $navigationSort = 2;
     protected static ?string $model = Condominium::class;
     protected static ?string $navigationLabel = 'Condominios';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
@@ -76,5 +77,10 @@ class CondominiumResource extends Resource
             'create' => Pages\CreateCondominium::route('/create'),
             'edit' => Pages\EditCondominium::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

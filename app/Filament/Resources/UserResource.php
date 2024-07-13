@@ -3,10 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Models\User;
-use App\Models\Condominium;
 use App\Models\Role;
+use App\Models\Condominium;
 use App\Models\Inventory;
-use App\Models\Category;
 use App\Models\Report;
 use App\Models\Task;
 
@@ -32,6 +31,7 @@ class UserResource extends Resource
 {
     protected static ?int $navigationSort = 1;
     protected static ?string $model = User::class;
+    protected static ?string $navigationGroup = 'Empleados';
     protected static ?string $navigationLabel = 'Usuarios';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
@@ -55,7 +55,7 @@ class UserResource extends Resource
                 Section::make('Sobre tu Información Personal')->columns(4)
                     ->description('Tus datos personales son importantes para validar tu relación al condominio')
                     ->schema([
-                        Forms\Components\TextInput::make('name')->label('Nombre')
+                        Forms\Components\TextInput::make('name')->label('Nombre y Apellido')
                             ->required(),
                         Forms\Components\TextInput::make('email')->label('Correo')
                             ->email()->required(),
@@ -67,7 +67,8 @@ class UserResource extends Resource
                             ->options(function () { return self::getCountriesList(); })
                             ->required(),
                         Forms\Components\Select::make('doc_type')->label('Tipo de Documento')
-                            ->options(['DNI' => 'DNI - Documento Nacional de Identidad', 'CE' => 'CE - Carnet de Extranjería','PTP' => 'PTP - Permiso Temporal de Permanencia','PAS' => 'PAS - Pasaporte',])
+                            ->options(['DNI' => 'DNI - Documento Nacional de Identidad',
+                            'CE' => 'CE - Carnet de Extranjería','PTP' => 'PTP - Permiso Temporal de Permanencia','PAS' => 'PAS - Pasaporte',])
                             ->required(),
                         Forms\Components\TextInput::make('document')->label('Nro. de Documento')
                             ->required(),
@@ -79,8 +80,8 @@ class UserResource extends Resource
                     ->description('Los detalles sobre tu rol dentro del Condominio son esenciales para la seguridad de todos')
                     ->schema([
                         Forms\Components\Select::make('condominium_id')->label('Condominio Asignado')
-                            ->options(['1' => 'Los Pinos', '2' => 'Los Sauces', '3' => 'Los Altos',])
-                            ->required(),
+                            ->relationship(name:'condominium', titleAttribute:'name')
+                            ->preload()->live()->required(),
                         Forms\Components\Select::make('user.role')->label('Area')
                             ->options(['0' => 'Residente', '1' => 'Vigilante', '2' => 'Mantenimiento',
                             '3' => 'Supervisor', '4' => 'Delegado', '5' => 'Administrador', '6' => 'Gerente'])
@@ -105,7 +106,16 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role.name')->label('Área')
-                    ->searchable()->sortable(),
+                    ->searchable()->sortable()->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Residente' => 'gray', 'Vigilante' => 'info',
+                        'Mantenimiento' => 'info', 'Supervisor' => 'info',
+                        'Delegado' => 'gray', 'Administrador' => 'rose', 'Gerente' => 'rose'})
+                    ->icon(fn (string $state): string => match ($state) {
+                        'Residente' => 'heroicon-o-user-circle', 'Mantenimiento' => 'heroicon-o-wrench-screwdriver',
+                        'Vigilante' => 'heroicon-o-video-camera', 'Supervisor' => 'heroicon-o-eye',
+                        'Administrador' => 'heroicon-o-calculator', 'Gerente' => 'heroicon-o-star',
+                        'Delegado' => 'heroicon-o-user-group'}),
                 Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
                     ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('email')->label('Correo')
@@ -113,10 +123,11 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('cellphone')->label('Teléfono')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('combined_column')->label('Documento')
-                    ->searchable()->sortable()->getStateUsing(function ($record) { return
-                    "{$record->doc_type} {$record->document}"; }),
+                    ->searchable()->sortable()
+                    ->getStateUsing(function ($record) { return
+                        "{$record->doc_type} {$record->document}"; }),
                 Tables\Columns\TextColumn::make('address')->label('Dirección')
-                    ->searchable()->limit(30),
+                    ->searchable()->toggleable(isToggledHiddenByDefault:true),
             ])
             ->filters([
                 //

@@ -3,9 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Models\User;
+use App\Models\Role;
 use App\Models\Condominium;
 use App\Models\Inventory;
-use App\Models\Category;
 use App\Models\Report;
 use App\Models\Task;
 
@@ -17,12 +17,14 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CondominiumResource extends Resource
 {
     protected static ?int $navigationSort = 2;
     protected static ?string $model = Condominium::class;
+    protected static ?string $navigationGroup = 'Condominios';
     protected static ?string $navigationLabel = 'Condominios';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
@@ -49,6 +51,8 @@ class CondominiumResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('address')->label('Dirección')
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('user.name')->label('Empleados')
+                    ->circular()->stacked()->limit(2)->limitedRemainingText()
             ])
             ->filters([
                 //

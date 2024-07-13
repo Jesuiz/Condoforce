@@ -14,6 +14,7 @@ class Task extends Model
     public static $areas = ['Residente', 'Vigilancia', 'Mantenimiento', 'Supervisión', 'Delegación', 'Administración', 'Gerencia'];
     public static $statuses = ['Asignado', 'En Desarrollo', 'Finalizado', 'Fallido'];
 
+    
     public static function boot()
     {
         parent::boot();

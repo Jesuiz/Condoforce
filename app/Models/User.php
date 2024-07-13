@@ -16,6 +16,7 @@ class User extends Authenticatable
     protected $fillable = ['name','email','password','country','doc_type','document','cellphone','address','condominium_id','profile_img'];
     protected $hidden = ['password','remember_token',];
 
+    
     protected function casts(): array
     {
         return [
@@ -27,5 +28,10 @@ class User extends Authenticatable
     public function condominium()
     {
         return $this->belongsTo(Condominium::class);
+    }
+    
+    public function role()
+    {
+        return $this->hasOne(Role::class);
     }
 }

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Condominium;
 use App\Models\Role;
-use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Report;
 use App\Models\Task;
@@ -43,13 +42,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Paso 3: Crear usuarios adicionales
-        User::factory(24)->create(['condominium_id' => fn() => $condominiums->random()->id]);
+        User::factory(49)->create(['condominium_id' => fn() => $condominiums->random()->id]);
 
-        // Paso 4: Crear categorías
-        Category::truncate();
-        Category::factory()->count(8)->create();
-
-        // Paso 5: Crear inventarios, reportes y tareas
+        // Paso 4: Crear inventarios, reportes y tareas
         Role::truncate();
         Inventory::truncate();
         Report::truncate();

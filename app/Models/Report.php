@@ -13,6 +13,7 @@ class Report extends Model
     protected $fillable = ['name','description','area','user_id','condominium_id'];
     public static $areas = ['Residente', 'Vigilancia', 'Mantenimiento', 'Supervisión', 'Delegación', 'Administración', 'Gerencia'];
 
+    
     public static function boot()
     {
         parent::boot();

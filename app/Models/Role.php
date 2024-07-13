@@ -15,6 +15,7 @@ class Role extends Model
     protected $fillable = ['name', 'salary', 'user_id', 'condominium_id'];
     public static $areas = ['Residente', 'Vigilante', 'Mantenimiento', 'Supervisor', 'Delegado', 'Administrador', 'Gerente'];
 
+    
     /* public static function boot()
     {
         parent::boot();

@@ -3,9 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Models\User;
+use App\Models\Role;
 use App\Models\Condominium;
 use App\Models\Inventory;
-use App\Models\Category;
 use App\Models\Report;
 use App\Models\Task;
 
@@ -23,6 +23,7 @@ class InventoryResource extends Resource
 {
     protected static ?int $navigationSort = 5;
     protected static ?string $model = Inventory::class;
+    protected static ?string $navigationGroup = 'Condominios';
     protected static ?string $navigationLabel = 'Inventario';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -35,7 +36,13 @@ class InventoryResource extends Resource
                 Forms\Components\TextInput::make('description')->label('Descripción')
                     ->required(),
                 Forms\Components\TextInput::make('units')->label('Unidades')
-                    ->required(),
+                    ->required()->badge()
+                    ->icon(function ($state) {
+                        $state = (int)$state;
+                        if ($state < 10) { return 'heroicon-o-calculator'; }
+                            elseif ($state < 100) { return 'heroicon-o-calculator'; }
+                                return 'heroicon-o-user-circle';
+                    }),
                 Forms\Components\TextInput::make('amount')->label('Monto')
                     ->required(),
                 Forms\Components\TextInput::make('expiration')->label('Expiración')
@@ -51,8 +58,18 @@ class InventoryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
                     ->wrap()->sortable()->searchable()->description(fn (Inventory $record): string => $record->description),
+                Tables\Columns\TextColumn::make('category')->label('Área')
+                    ->searchable()->sortable()->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Mantenimiento' => 'info', 'Jardinería' => 'emerald', 'Iluminación' => 'warning',
+                        'Limpieza' => 'emerald', 'Seguridad' => 'info', 'Suministros' => 'violet',
+                        'Mobiliario' => 'violet', 'Tecnología' => 'cyan', 'Materiales' => 'cyan'})
+                    ->icon(fn (string $state): string => match ($state) {
+                        'Mantenimiento' => 'heroicon-o-key', 'Jardinería' => 'heroicon-o-sun', 'Iluminación' => 'heroicon-o-light-bulb',
+                        'Limpieza' => 'heroicon-o-beaker', 'Seguridad' => 'heroicon-o-lock-closed', 'Suministros' => 'heroicon-o-inbox-stack',
+                        'Mobiliario' => 'heroicon-o-cube', 'Tecnología' => 'heroicon-o-cpu-chip', 'Materiales' => 'heroicon-o-archive-box'}),
                 Tables\Columns\TextColumn::make('units')->label('Und')
-                    ->sortable()->searchable(),
+                    ->sortable()->searchable()->badge()->color('gray'),
                 Tables\Columns\TextColumn::make('expiration')->label('Expiración')
                     ->sortable()->date(),
                 Tables\Columns\TextColumn::make('created_at')->label('Añadido')

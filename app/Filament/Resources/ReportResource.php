@@ -2,9 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Condominium;
+use App\Models\Inventory;
+use App\Models\Report;
+use App\Models\Task;
+
 use App\Filament\Resources\ReportResource\Pages;
 use App\Filament\Resources\ReportResource\RelationManagers;
-use App\Models\Report;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,6 +23,7 @@ class ReportResource extends Resource
 {
     protected static ?int $navigationSort = 4;
     protected static ?string $model = Report::class;
+    protected static ?string $navigationGroup = 'Condominios';
     protected static ?string $navigationLabel = 'Incidencias';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
@@ -40,13 +47,16 @@ class ReportResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('area')->label('Área')
-                    ->searchable()
+                    ->searchable()->sortable()->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Residente' => 'gray', 'Vigilancia' => 'info',
+                        'Mantenimiento' => 'info', 'Supervisión' => 'info',
+                        'Delegación' => 'gray', 'Administración' => 'rose', 'Gerencia' => 'rose'})
                     ->icon(fn (string $state): string => match ($state) {
                         'Residente' => 'heroicon-o-user-circle', 'Mantenimiento' => 'heroicon-o-wrench-screwdriver',
                         'Vigilancia' => 'heroicon-o-video-camera', 'Supervisión' => 'heroicon-o-eye',
                         'Administración' => 'heroicon-o-calculator', 'Gerencia' => 'heroicon-o-star',
-                        'Delegación' => 'heroicon-o-user-group', default => 'gray',
-                    }),
+                        'Delegación' => 'heroicon-o-user-group'}),
                 Tables\Columns\TextColumn::make('created_at')->label('Fecha')
                 ->dateTime(),
                 Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')

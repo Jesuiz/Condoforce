@@ -17,15 +17,17 @@ class InventoryFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'description' => $this->faker->paragraph(),
+            'category' => $this->faker->randomElement(Inventory::$categories),
             'units' => $this->faker->numberBetween(1, 100),
             'amount' => $this->faker->randomFloat(2, 10, 1000),
-            'expiration' => $this->faker->dateTimeBetween('now', '+5 years')->format('Y-m-d'),
+            'expiration' => function () {
+                if ($this->faker->boolean(90)) {
+                        return $this->faker->dateTimeBetween('now', '+5 years')->format('Y-m-d');
+                    } return null; },
             'user_id' => function () {
                 return \App\Models\User::inRandomOrder()->first()->id; },
             'condominium_id' => function () {
                 return \App\Models\Condominium::inRandomOrder()->first()->id; },
-            'category_id' => function () {
-                return \App\Models\Category::inRandomOrder()->first()->id; },
         ];
     }
 }

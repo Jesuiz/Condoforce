@@ -2,9 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Condominium;
+use App\Models\Inventory;
+use App\Models\Report;
+use App\Models\Task;
+
 use App\Filament\Resources\TaskResource\Pages;
 use App\Filament\Resources\TaskResource\RelationManagers;
-use App\Models\Task;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,6 +23,7 @@ class TaskResource extends Resource
 {
     protected static ?int $navigationSort = 3;
     protected static ?string $model = Task::class;
+    protected static ?string $navigationGroup = 'Condominios';
     protected static ?string $navigationLabel = 'Actividades';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
@@ -37,23 +44,25 @@ class TaskResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('area')->label('Área')
-                    ->searchable()
-                    ->icon(fn (string $state): string => match ($state) {
-                        'Residente' => 'heroicon-o-user-circle', 'Mantenimiento' => 'heroicon-o-wrench-screwdriver',
-                        'Vigilancia' => 'heroicon-o-video-camera', 'Supervisión' => 'heroicon-o-eye',
-                        'Administración' => 'heroicon-o-calculator', 'Gerencia' => 'heroicon-o-star',
-                        'Delegación' => 'heroicon-o-user-group', default => 'gray',
-                    }),
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
                     ->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('area')->label('Área')
+                    ->searchable()->sortable()->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Residente' => 'gray', 'Vigilancia' => 'info',
+                        'Mantenimiento' => 'info', 'Supervisión' => 'info',
+                        'Delegación' => 'gray', 'Administración' => 'rose', 'Gerencia' => 'rose'})
+                    ->icon(fn (string $state): string => match ($state) {
+                        'Residente' => 'heroicon-o-user-circle', 'Mantenimiento' => 'heroicon-o-wrench-screwdriver',
+                        'Vigilancia' => 'heroicon-o-video-camera', 'Supervisión' => 'heroicon-o-eye',
+                        'Administración' => 'heroicon-o-calculator', 'Gerencia' => 'heroicon-o-star',
+                        'Delegación' => 'heroicon-o-user-group'}),
                 Tables\Columns\IconColumn::make('status')->label('Status')
                 ->color(fn (string $state): string => match ($state) {
                     'Asignado' => 'warning', 'En Desarrollo' => 'info',
-                    'Finalizado' => 'success', 'Fallido' => 'danger',
-                    default => 'gray'})
+                    'Finalizado' => 'success', 'Fallido' => 'danger', default => 'gray'})
                 ->icon(fn (string $state): string => match ($state) {
                     'Asignado' => 'heroicon-o-exclamation-circle', 'En Desarrollo' => 'heroicon-o-ellipsis-horizontal-circle',
                     'Finalizado' => 'heroicon-o-check-circle', 'Fallido' => 'heroicon-o-x-circle',

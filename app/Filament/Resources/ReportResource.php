@@ -30,21 +30,27 @@ class ReportResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+
             ->schema([
                 Forms\Components\TextInput::make('created_at')->label('Fecha')
                     ->required(),
+
                 Forms\Components\TextInput::make('name')->label('Nombre')
                     ->required(),
+
                 Forms\Components\TextInput::make('address')->label('Dirección')
                     ->required(),
+
                 Forms\Components\TextInput::make('is_active')->label('Status')
                     ->required(),
+
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+        
             ->columns([
                 Tables\Columns\TextColumn::make('area')->label('Área')
                     ->searchable()->sortable()->badge()
@@ -57,14 +63,19 @@ class ReportResource extends Resource
                         'Vigilancia' => 'heroicon-o-video-camera', 'Supervisión' => 'heroicon-o-eye',
                         'Administración' => 'heroicon-o-calculator', 'Gerencia' => 'heroicon-o-star',
                         'Delegación' => 'heroicon-o-user-group'}),
+
                 Tables\Columns\TextColumn::make('created_at')->label('Fecha')
                 ->dateTime(),
+
                 Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
                     ->searchable()->sortable(),
+
                 Tables\Columns\TextColumn::make('name')->label('Incidencia')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('description')->label('Descripción')
-                    ->searchable(),
+                    ->searchable()->wrap(),
+
             ])
             ->filters([
                 //

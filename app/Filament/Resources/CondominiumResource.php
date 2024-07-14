@@ -45,14 +45,19 @@ class CondominiumResource extends Resource
     {
         return $table
             ->columns([
+
                 Tables\Columns\IconColumn::make('is_active')->label('Status')
-                    ->boolean(),
+                    ->boolean()->sortable(),
+
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('address')->label('Dirección')
                     ->searchable(),
+
                 Tables\Columns\ImageColumn::make('user.name')->label('Empleados')
-                    ->circular()->stacked()->limit(2)->limitedRemainingText()
+                    ->circular()->stacked()->limit(2)->limitedRemainingText()->placeholder('Sin empleados'),
+
             ])
             ->filters([
                 //

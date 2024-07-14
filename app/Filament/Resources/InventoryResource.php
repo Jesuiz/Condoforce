@@ -18,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Support\Enums\IconPosition;
 
 class InventoryResource extends Resource
 {
@@ -31,24 +32,32 @@ class InventoryResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('name')->label('Nombre')
                     ->required(),
+
                 Forms\Components\TextInput::make('description')->label('Descripción')
                     ->required(),
+
                 Forms\Components\TextInput::make('units')->label('Unidades')
                     ->required()->badge()
                     ->icon(function ($state) {
                         $state = (int)$state;
-                        if ($state < 10) { return 'heroicon-o-calculator'; }
-                            elseif ($state < 100) { return 'heroicon-o-calculator'; }
-                                return 'heroicon-o-user-circle';
+                        if ($state < 10) {
+                            return 'heroicon-o-calculator'; }
+                        elseif ($state < 100) { return 'heroicon-o-calculator'; }
+                            return 'heroicon-o-user-circle';
                     }),
+
                 Forms\Components\TextInput::make('amount')->label('Monto')
                     ->required(),
+
                 Forms\Components\TextInput::make('expiration')->label('Expiración')
                     ->required(),
+
                 Forms\Components\TextInput::make('user_id')->label('Añadido por')
                     ->required(),
+
             ]);
     }
 
@@ -56,8 +65,11 @@ class InventoryResource extends Resource
     {
         return $table
             ->columns([
+
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
-                    ->wrap()->sortable()->searchable()->description(fn (Inventory $record): string => $record->description),
+                    ->sortable()->searchable()->wrap()
+                    ->description(fn (Inventory $record): string => $record->description),
+
                 Tables\Columns\TextColumn::make('category')->label('Área')
                     ->searchable()->sortable()->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -68,14 +80,23 @@ class InventoryResource extends Resource
                         'Mantenimiento' => 'heroicon-o-key', 'Jardinería' => 'heroicon-o-sun', 'Iluminación' => 'heroicon-o-light-bulb',
                         'Limpieza' => 'heroicon-o-beaker', 'Seguridad' => 'heroicon-o-lock-closed', 'Suministros' => 'heroicon-o-inbox-stack',
                         'Mobiliario' => 'heroicon-o-cube', 'Tecnología' => 'heroicon-o-cpu-chip', 'Materiales' => 'heroicon-o-archive-box'}),
-                Tables\Columns\TextColumn::make('units')->label('Und')
-                    ->sortable()->searchable()->badge()->color('gray'),
+
+                Tables\Columns\TextColumn::make('units')->label('Unidades')
+                    ->sortable()->searchable()->badge()->color('gray')->suffix('und')
+                    ->icon(function (Inventory $record) {
+                        if ($record->units < 20) { return 'heroicon-o-exclamation-triangle'; }
+                    }),
+
                 Tables\Columns\TextColumn::make('expiration')->label('Expiración')
-                    ->sortable()->date(),
+                    ->sortable()->date()->placeholder('No expira'),
+
                 Tables\Columns\TextColumn::make('created_at')->label('Añadido')
                     ->sortable()->since(),
-                Tables\Columns\TextColumn::make('amount')->label('Monto')
-                    ->sortable()->numeric(decimalPlaces: 2)->money('PEN')->color('success')->icon('heroicon-m-currency-dollar'),
+
+                Tables\Columns\TextColumn::make('amount')->label('Costo')
+                    ->sortable()->icon('heroicon-m-currency-dollar')
+                    ->numeric(decimalPlaces: 2)->prefix('S/ ')->color('success'),
+
             ])
             ->filters([
                 //

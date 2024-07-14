@@ -30,24 +30,31 @@ class TaskResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+
             ->schema([
                 Forms\Components\TextInput::make('name')->label('Nombre')
                     ->required(),
+
                 Forms\Components\TextInput::make('address')->label('Dirección')
                     ->required(),
+
                 Forms\Components\TextInput::make('is_active')->label('Status')
                     ->required(),
+
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
                     ->searchable()->sortable(),
+
                 Tables\Columns\TextColumn::make('area')->label('Área')
                     ->searchable()->sortable()->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -59,20 +66,26 @@ class TaskResource extends Resource
                         'Vigilancia' => 'heroicon-o-video-camera', 'Supervisión' => 'heroicon-o-eye',
                         'Administración' => 'heroicon-o-calculator', 'Gerencia' => 'heroicon-o-star',
                         'Delegación' => 'heroicon-o-user-group'}),
+
                 Tables\Columns\IconColumn::make('status')->label('Status')
-                ->color(fn (string $state): string => match ($state) {
-                    'Asignado' => 'warning', 'En Desarrollo' => 'info',
-                    'Finalizado' => 'success', 'Fallido' => 'danger', default => 'gray'})
-                ->icon(fn (string $state): string => match ($state) {
-                    'Asignado' => 'heroicon-o-exclamation-circle', 'En Desarrollo' => 'heroicon-o-ellipsis-horizontal-circle',
-                    'Finalizado' => 'heroicon-o-check-circle', 'Fallido' => 'heroicon-o-x-circle',
-                    default => 'gray',
-                }),
+                    ->sortable()
+                    ->tooltip(fn (string $state): string => match ($state) {
+                        'Asignado' => 'Asignado', 'En Desarrollo' => 'En Desarrollo',
+                        'Finalizado' => 'Finalizado', 'Fallido' => 'Fallido', default => 'Sin asignar'})
+                    ->color(fn (string $state): string => match ($state) {
+                        'Asignado' => 'warning', 'En Desarrollo' => 'info',
+                        'Finalizado' => 'success', 'Fallido' => 'danger', default => 'gray'})
+                    ->icon(fn (string $state): string => match ($state) {
+                        'Asignado' => 'heroicon-o-exclamation-circle', 'En Desarrollo' => 'heroicon-o-ellipsis-horizontal-circle',
+                        'Finalizado' => 'heroicon-o-check-circle', 'Fallido' => 'heroicon-o-x-circle', default => 'heroicon-o-question-mark-circle'}),
+
                 Tables\Columns\TextColumn::make('time_limit')->label('Entrega')
                     ->searchable()->getStateUsing(function ($record) { return
                         "{$record->time_limit}/h"; }),
+
                 Tables\Columns\TextColumn::make('description')->label('Descripción')
                     ->wrap()->searchable(),
+
             ])
             ->filters([
                 //

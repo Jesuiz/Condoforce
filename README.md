@@ -8,7 +8,8 @@ Aplicación administrativa con todas las funcionalidades esenciales para la gest
 <br>
 
 ## Módulo 1 | 🧑 Usuarios
-Gestiona los usuarios de la plataforma, asigna roles y detalla información personal de cada empleado.
+<p>Gestiona los usuarios de la plataforma, asigna roles y detalla información personal de cada empleado.</p>
+<p style="margin-bottom: 10px"><a target="_blank"><img src="public\readme_img\users-module.webp" width="150" alt="Users Module"></a></p>
 
 <br>
 

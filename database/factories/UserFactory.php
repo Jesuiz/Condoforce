@@ -27,6 +27,8 @@ class UserFactory extends Factory
             'profile_img' => $this->faker->imageUrl(640, 480, 'people', true, 'Faker'),
             'condominium_id' => function () {
                 return \App\Models\Condominium::inRandomOrder()->first()->id; },
+            'role_id' => function () {
+                return \App\Models\Role::inRandomOrder()->first()->id; },
 
             'email_verified_at' => now(),
             'is_active' => $this->faker->boolean(),
@@ -40,8 +42,6 @@ class UserFactory extends Factory
             Role::create([
                 'name' => $this->faker->randomElement(['Residente', 'Vigilante', 'Mantenimiento', 'Supervisor', 'Delegado', 'Administrador', 'Gerente']),
                 'salary' => $this->faker->randomFloat(2, 1000, 5000),
-                'user_id' => $user->id,
-                'condominium_id' => $user->condominium_id,
             ]);
         });
     }

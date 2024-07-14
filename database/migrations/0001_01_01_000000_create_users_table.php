@@ -25,6 +25,9 @@ return new class extends Migration
 
             $table->unsignedBigInteger('condominium_id');
             $table->foreign('condominium_id')->references('id')->on('condominiums')->onDelete('cascade');
+            
+            $table->unsignedBigInteger('role_id');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
 
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_active')->nullable()->default(true);
@@ -36,11 +39,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id')->primary();
             $table->enum('name', ['Residente', 'Vigilante', 'Mantenimiento', 'Supervisor', 'Delegado', 'Administrador', 'Gerente']);
             $table->decimal('salary', 10, 2);
-
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('condominium_id');
-            $table->foreign('condominium_id')->references('id')->on('condominiums')->onDelete('cascade');
             $table->timestamps();
         });
 

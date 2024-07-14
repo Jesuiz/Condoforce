@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->mediumText('address')->nullable();
+            $table->decimal('budget', 10, 2);
             $table->boolean('is_active')->nullable()->default(true);
             $table->timestamps();
         });

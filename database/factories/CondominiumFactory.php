@@ -12,11 +12,10 @@ class CondominiumFactory extends Factory
 
     public function definition()
     {
-        $condoName = $this->faker->sentence(2, true);
-
         return [
             'name' => $this->faker->randomElement(['Los Pinos', 'Nuevo Alcázar', 'Las Casuarinas', 'Besco', 'La Planicie', 'Los Sauces', 'La Estancia', 'La Pradera', 'El Sol de la Molina']),
             'address' => $this->faker->streetAddress(),
+            'budget' => $this->faker->randomFloat(2, 8000, 15000),
             'is_active' => $this->faker->boolean(80),
         ];
     }

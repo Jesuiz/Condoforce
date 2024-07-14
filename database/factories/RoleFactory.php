@@ -13,15 +13,9 @@ class RoleFactory extends Factory
 
     public function definition()
     {
-        $condoName = $this->faker->sentence(2, true);
-
         return [
             'name' => $this->faker->randomElement(Role::$areas),
             'salary' => $this->faker->randomFloat(2, 1000, 5000),
-            'user_id' => function () {
-                return \App\Models\User::inRandomOrder()->first()->id; },
-            'condominium_id' => function () {
-                return \App\Models\Condominium::inRandomOrder()->first()->id; },
         ];
     }
 }

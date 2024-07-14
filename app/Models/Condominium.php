@@ -12,7 +12,7 @@ class Condominium extends Model
     use HasFactory, Notifiable;
     
     protected $table = 'condominiums';
-    protected $fillable = ['name','address','employees','is_active'];
+    protected $fillable = ['name','address','employees','budget','is_active'];
 
     
     public function user()

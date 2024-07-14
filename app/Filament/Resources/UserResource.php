@@ -24,6 +24,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\Summarizers\Average;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 
 use Rinvex\Country\CountryLoader;
 
@@ -62,7 +65,7 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('password')->label('Contraseña')
                             ->password()->required(),
                         Forms\Components\TextInput::make('cellphone')->label('Teléfono')
-                        ->required(),
+                            ->required(),
                         Forms\Components\Select::make('country')->label('País')
                             ->options(function () { return self::getCountriesList(); })
                             ->required(),
@@ -97,38 +100,35 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                /* Tables\Columns\ImageColumn::make('profile_img')->label('Status')
-                    ->circular()->defaultImageUrl(url('public\profile_img\profile_img.webp'))
-                    ->extraImgAttributes(['loading' => 'lazy'])->width(50)->height(50)->size(40), */
                 
-                Tables\Columns\IconColumn::make('is_active')->label('Status')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
-                    ->searchable(),
+                    ->searchable()->wrap()->description(
+                        fn (User $record): string => "{$record->doc_type} {$record->document}"),
+
                 Tables\Columns\TextColumn::make('role.name')->label('Área')
-                    ->searchable()->sortable()->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->searchable()->badge()->color(
+                        fn (string $state): string => match ($state) {
                         'Residente' => 'gray', 'Vigilante' => 'info',
                         'Mantenimiento' => 'info', 'Supervisor' => 'info',
                         'Delegado' => 'gray', 'Administrador' => 'rose', 'Gerente' => 'rose'})
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(
+                        fn (string $state): string => match ($state) {
                         'Residente' => 'heroicon-o-user-circle', 'Mantenimiento' => 'heroicon-o-wrench-screwdriver',
                         'Vigilante' => 'heroicon-o-video-camera', 'Supervisor' => 'heroicon-o-eye',
                         'Administrador' => 'heroicon-o-calculator', 'Gerente' => 'heroicon-o-star',
                         'Delegado' => 'heroicon-o-user-group'}),
+
                 Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
-                    ->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('email')->label('Correo')
-                    ->searchable()->copyable()->copyMessage('Copiado')->copyMessageDuration(1500),
-                Tables\Columns\TextColumn::make('cellphone')->label('Teléfono')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('combined_column')->label('Documento')
-                    ->searchable()->sortable()
-                    ->getStateUsing(function ($record) { return
-                        "{$record->doc_type} {$record->document}"; }),
-                Tables\Columns\TextColumn::make('address')->label('Dirección')
-                    ->searchable()->toggleable(isToggledHiddenByDefault:true),
-            ])
+                    ->searchable()->wrap()->description(
+                        fn (User $record): string => "{$record->condominium->address}"),
+
+
+                Tables\Columns\TextColumn::make('role.salary')->label('Salario')
+                    ->numeric(decimalPlaces: 2)->prefix('S/ ')->color('success')->icon('heroicon-m-currency-dollar'),
+
+                Tables\Columns\TextColumn::make('address')->label('Dirección'),
+
+                ])
             ->filters([
                 //
             ])

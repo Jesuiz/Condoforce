@@ -1,24 +1,24 @@
-<p style="margin-bottom: 30px"><a target="_blank"><img src="public\LOGO WHITE-01.webp" width="300" alt="Condoforce Logo"></a></p>
+<a target="_blank"><img src="public\LOGO WHITE-01.webp" width="300" alt="Condoforce Logo"></a><br />
 
-# Condoforce | Administrador de Condominios
-<p style="margin-bottom: 30px">Aplicación administrativa con todas las funcionalidades esenciales para la gestión profesional de condominios, empleados, inventario, actividades, reportes y más.</p>
+# Condoforce | Condominium Manager
+Administrative application with all essential features for professional management of condominiums, employees, inventory, activities, reports, and more.<br />
 
-## Módulo 1 | 🧑 Usuarios
-<p>Gestiona los usuarios de la plataforma, asigna roles a cada empleado, detalla información personal y de contacto, relaciónalos a el condominiio que corresponde, asigna un salario que solo veran gerentes y/o administradores.</p>
-<p style="margin-bottom: 15px"><a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a></p>
+## 1 Module| 🧑 Users & Employees
+Manage platform users, assign roles to each employee, add personal and contact details, link them to the corresponding condominium, and assign a salary that only managers and/or administrators will see.
+<a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a>
 
-## Módulo 2 | 🏙️ Condominios
-<p>Organiza tus condominios y relaciona todos los detalles de los demás módulos con cada condominio.</p>
-<!-- <p style="margin-bottom: 15px"><a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a></p> -->
+## 2 Module | 🏙️ Condominiums Details
+Organize your condominiums and link all the details from other modules with each condominium.
+<!-- <p><a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a></p> -->
 
-## Módulo 3 | 🏷️ Inventario
-<p>Administra el inventario de cada condominio con tablas que definen unidades, montos, expiración y más.</p>
-<!-- <p style="margin-bottom: 15px"><a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a></p> -->
+## 3 Module | 🏷️ Inventory & Products
+Manage the inventory of each condominium with tables that define units, amounts, expiration dates, and more.
+<!-- <p><a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a></p> -->
 
-## Módulo 4 | 🚨 Incidencias
-<p>Permite a tus vigilantes crear reportes de cada incidencia y accede a sus detalles fácilmente.</p>
-<!-- <p style="margin-bottom: 15px"><a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a></p> -->
+## 4 Module | 🚨 Incidents & Reports
+Allow your security guards to create reports for each incident and easily access their details.
+<!-- <p><a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a></p> -->
 
-## Módulo 5 | 🎯 Tareas
-<p>Asigna tareas a cada empleado, delega actividades y establece tiempos límite de manera clara y eficiente.</p>
-<!-- <p style="margin-bottom: 15px"><a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a></p> -->
+## 5 Module | 🎯 Tasks & Activities
+Assign tasks to each employee, delegate activities, and set clear and efficient deadlines.
+<!-- <p><a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a></p> -->

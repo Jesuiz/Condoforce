@@ -9,34 +9,24 @@ use App\Models\Inventory;
 use App\Models\Report;
 use App\Models\Task;
 
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers;
+use App\Models\Employee;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\Section;
-use Filament\Tables\Columns\Summarizers\Average;
-use Filament\Support\Enums\FontWeight;
-use Filament\Tables\Columns\Layout\Split;
-use Filament\Tables\Columns\Layout\Stack;
 
-use Rinvex\Country\CountryLoader;
-
-class UserResource extends Resource
+class EmployeeResource extends Resource
 {
     protected static ?int $navigationSort = 1;
     protected static ?string $model = User::class;
     protected static ?string $navigationGroup = 'Usuarios';
-    protected static ?string $navigationLabel = 'Residentes';
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationLabel = 'Empleados';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
     public static function getCountriesList()
     {
@@ -105,7 +95,7 @@ class UserResource extends Resource
                     ->searchable()->wrap()->description(
                         fn (User $record): string => "{$record->doc_type} {$record->document}"),
 
-                Tables\Columns\TextColumn::make('role.name')->label('Tipo')
+                Tables\Columns\TextColumn::make('role.name')->label('Área')
                     ->searchable()->badge()->color(
                         fn (string $state): string => match ($state) {
                         'Residente' => 'gray', 'Vigilante' => 'info',
@@ -121,6 +111,9 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
                     ->searchable()->wrap()->description(
                         fn (User $record): string => "{$record->condominium->address}"),
+
+                Tables\Columns\TextColumn::make('role.salary')->label('Salario')
+                    ->numeric(decimalPlaces:0)->prefix('S/ ')->color('success')->icon('heroicon-m-currency-dollar'),
 
                 Tables\Columns\TextColumn::make('address')->label('Dirección'),
 
@@ -150,14 +143,14 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListEmployees::route('/'),
+            'create' => Pages\CreateEmployee::route('/create'),
+            'edit' => Pages\EditEmployee::route('/{record}/edit'),
         ];
     }
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::whereIn('role_id', [1,2])->count();
+        return static::getModel()::whereIn('role_id', [3,4,5,6,7])->count();
     }
 }

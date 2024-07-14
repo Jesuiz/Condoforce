@@ -1,9 +1,9 @@
-<a target="_blank"><img src="public\LOGO WHITE-01.webp" width="300" alt="Condoforce Logo"></a><br />
+<a target="_blank"><img src="public\logo-white.webp" width="300" alt="Condoforce Logo"></a><br /><br />
 
-# Condoforce | Condominium Manager
+# Condoforce - Condominium Manager
 Administrative application with all essential features for professional management of condominiums, employees, inventory, activities, reports, and more.<br />
 
-## 1 Module| 🧑 Users & Employees
+## 1 Module | 🧑 Users & Employees
 Manage platform users, assign roles to each employee, add personal and contact details, link them to the corresponding condominium, and assign a salary that only managers and/or administrators will see.
 <a target="_blank"><img src="public\readme_img\users-module.webp" width="400" alt="Users Module"></a>
 

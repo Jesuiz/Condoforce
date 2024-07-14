@@ -24,6 +24,8 @@ class CondominiumResource extends Resource
 {
     protected static ?int $navigationSort = 2;
     protected static ?string $model = Condominium::class;
+
+    protected static ?string $modelLabel = 'condominios';
     protected static ?string $navigationGroup = 'Condominios';
     protected static ?string $navigationLabel = 'Condominios';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
@@ -49,14 +51,26 @@ class CondominiumResource extends Resource
                 Tables\Columns\IconColumn::make('is_active')->label('Status')
                     ->boolean()->sortable(),
 
-                Tables\Columns\TextColumn::make('name')->label('Nombre')
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('address')->label('Dirección')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')->label('Condominio')
+                    ->searchable()->wrap()->description(
+                        fn (Condominium $record): string => "{$record->address}")
+                    /* ->url(fn (Condominium $record): string => route('condominium.details', ['condominium' => $record])) */,
 
                 Tables\Columns\ImageColumn::make('user.name')->label('Empleados')
-                    ->circular()->stacked()->limit(2)->limitedRemainingText()->placeholder('Sin empleados'),
+                    ->circular()->stacked()->limit(2)
+                    ->limitedRemainingText()->placeholder('Sin empleados'),
+
+                Tables\Columns\TextColumn::make('budget')->label('Presupuesto')
+                    ->numeric(decimalPlaces:0)->prefix('S/ ')->color('success')
+                    ->icon('heroicon-m-currency-dollar')/* ->visible(auth()->user()->isAdmin()) */,
+
+                /* Tables\Columns\TextColumn::make('expenses')->label('Gastos')
+                    ->numeric(decimalPlaces:0)->prefix('S/ ')->color('rose')
+                    ->icon('heroicon-m-currency-dollar')/* ->visible(auth()->user()->isAdmin()) */
+
+                Tables\Columns\TextColumn::make('inventory.name')->label('Inventario')
+                    ->sortable()->searchable()->wrap()->badge()->color('gray')
+                    ->wrap()->placeholder('Sin productos en stock')
 
             ])
             ->filters([
@@ -64,6 +78,8 @@ class CondominiumResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                    
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

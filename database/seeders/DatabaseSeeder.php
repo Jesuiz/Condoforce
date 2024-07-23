@@ -17,16 +17,13 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        echo "DatabaseSeeder iniciado...\n\n";
 
         // Crear condominios
-        Condominium::truncate();
         Condominium::factory()->count(6)->create();
         Condominium::factory()->inactive()->count(1)->create();
         Condominium::factory()->active()->count(3)->create();
 
         // Crear roles
-        Role::truncate();
         Role::factory()->count(7)->create();
 
         // Crear usuario administrador
@@ -42,20 +39,17 @@ class DatabaseSeeder extends Seeder
             'cellphone' => '935035069',
             'address' => 'Edif. 2, Dpto. 503, Cond. Los Pinos - El Agustino',
             'profile_img' => 'public/profile_img/jesus_ruiz.png',
-            'condominium_id' => $condominiums->random()->id,
-            'role_id' => $roles->random()->id,
+            'condominium_id' => $condominiums->first()->id,
+            'role_id' => $roles->first()->id,
         ]);
 
         // Crear usuarios adicionales
         User::factory(49)->create(['condominium_id' => fn() => $condominiums->random()->id]);
 
         // Crear inventarios, reportes y tareas
-        Inventory::truncate();
-        Report::truncate();
-        Task::truncate();
         $faker = Faker::create();
         User::all()->each(function ($user) use ($faker) {
-            Inventory::factory()->count($faker->numberBetween(0, 1))->create(['user_id' => $user->id]);
+            Inventory::factory()->count($faker->numberBetween(0, 20))->create(['user_id' => $user->id]);
             Report::factory()->count($faker->numberBetween(0, 1))->create(['user_id' => $user->id]);
             Task::factory()->count($faker->numberBetween(0, 2))->create(['user_id' => $user->id]);
         });

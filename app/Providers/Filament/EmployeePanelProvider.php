@@ -9,7 +9,6 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Support\Facades\FilamentColor;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -26,9 +25,8 @@ class EmployeePanelProvider extends PanelProvider
         return $panel
             ->id('employee')
             ->path('employee')
-            ->colors([
-                'primary' => Color::Amber,
-            ])
+            ->login()
+            ->colors([ 'primary' => Color::Green ])
             ->discoverResources(in: app_path('Filament/Employee/Resources'), for: 'App\\Filament\\Employee\\Resources')
             ->discoverPages(in: app_path('Filament/Employee/Pages'), for: 'App\\Filament\\Employee\\Pages')
             ->pages([
@@ -36,8 +34,8 @@ class EmployeePanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Employee/Widgets'), for: 'App\\Filament\\Employee\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                /* Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class, */
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -52,26 +50,6 @@ class EmployeePanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
-            FilamentColor::register([
-                'gray' => Color::Zinc,
-                'orange' => Color::Orange,
-                'warning' => Color::Amber,
-                'yellow' => Color::Yellow,
-                'lime' => Color::Lime,
-                'success' => Color::Green,
-                'emerald' => Color::Emerald,
-                'teal' => Color::Teal,
-                'cyan' => Color::Cyan,
-                'sky' => Color::Sky,
-                'info' => Color::Blue,
-                'indigo' => Color::Indigo,
-                'violet' => Color::Violet,
-                'purple' => Color::Purple,
-                'fuchsia' => Color::Fuchsia,
-                'pink' => Color::Pink,
-                'rose' => Color::Rose,
-                'danger' => Color::Red,
             ]);
     }
 }

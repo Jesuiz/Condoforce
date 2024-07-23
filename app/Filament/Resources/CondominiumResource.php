@@ -9,6 +9,8 @@ use App\Models\Inventory;
 use App\Models\Report;
 use App\Models\Task;
 
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\CondominiumResource\Pages;
 use App\Filament\Resources\CondominiumResource\RelationManagers;
 use Filament\Forms;
@@ -22,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CondominiumResource extends Resource
 {
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
     protected static ?string $model = Condominium::class;
 
     protected static ?string $modelLabel = 'condominios';
@@ -30,14 +32,17 @@ class CondominiumResource extends Resource
     protected static ?string $navigationLabel = 'Condominios';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->label('Nombre')
                     ->required(),
+
                 Forms\Components\TextInput::make('address')->label('Dirección')
                     ->required(),
+                    
                 Forms\Components\TextInput::make('is_active')->label('Status')
                     ->required(),
             ]);
@@ -55,8 +60,8 @@ class CondominiumResource extends Resource
                     ->searchable()->wrap()->description(
                         fn (Condominium $record): string => "{$record->address}")
                     /* ->url(fn (Condominium $record): string => route('condominium.details', ['condominium' => $record])) */,
-
-                Tables\Columns\ImageColumn::make('user.name')->label('Empleados')
+                    
+                Tables\Columns\ImageColumn::make('user.profile_img')->label('')
                     ->circular()->stacked()->limit(2)
                     ->limitedRemainingText()->placeholder('Sin empleados'),
 
@@ -69,17 +74,22 @@ class CondominiumResource extends Resource
                     ->icon('heroicon-m-currency-dollar')/* ->visible(auth()->user()->isAdmin()) */
 
                 Tables\Columns\TextColumn::make('inventory.name')->label('Inventario')
-                    ->sortable()->searchable()->wrap()->badge()->color('gray')
+                    ->sortable()->searchable()->wrap()->badge()->color('gray')->limitList(3)
                     ->wrap()->placeholder('Sin productos en stock')
 
             ])
+
+
             ->filters([
-                //
+                SelectFilter::make('is_active')->label('Status')
+                ->options([
+                    '0' => 'Inactivo',
+                    '1' => 'Activo', ]),
             ])
+
             ->actions([
-                Tables\Actions\EditAction::make(),
-                    
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->label(''),
+                Tables\Actions\DeleteAction::make()->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

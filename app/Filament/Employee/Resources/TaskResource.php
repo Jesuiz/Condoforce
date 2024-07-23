@@ -1,18 +1,13 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Employee\Resources;
 
-use App\Models\User;
-use App\Models\Role;
-use App\Models\Condominium;
-use App\Models\Inventory;
-use App\Models\Report;
 use App\Models\Task;
 
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
-use App\Filament\Resources\TaskResource\Pages;
-use App\Filament\Resources\TaskResource\RelationManagers;
+use App\Filament\Employee\Resources\TaskResource\Pages;
+use App\Filament\Employee\Resources\TaskResource\RelationManagers;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,14 +15,22 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class TaskResource extends Resource
 {
     protected static ?int $navigationSort = 3;
     protected static ?string $model = Task::class;
-    protected static ?string $navigationGroup = 'Condominios';
+    protected static ?string $navigationGroup = 'Mi Condominio';
     protected static ?string $navigationLabel = 'Actividades';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id);
+    }
+
 
     public static function form(Form $form): Form
     {
@@ -115,8 +118,7 @@ class TaskResource extends Resource
 
 
             ->actions([
-                Tables\Actions\EditAction::make()->label(''),
-                Tables\Actions\DeleteAction::make()->label(''),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -139,10 +141,5 @@ class TaskResource extends Resource
             'create' => Pages\CreateTask::route('/create'),
             'edit' => Pages\EditTask::route('/{record}/edit'),
         ];
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
     }
 }

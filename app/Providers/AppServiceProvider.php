@@ -13,7 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
     }
 
     /**
@@ -41,5 +40,6 @@ class AppServiceProvider extends ServiceProvider
             'rose' => Color::Rose,
             'danger' => Color::Red,
         ]);
+
     }
 }

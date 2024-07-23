@@ -46,7 +46,6 @@ class UserResource extends Resource
         foreach ($countries as $isoCode => $country) {
             $countryList[$isoCode] =  $country['name'];
         }
-
         return $countryList;
     }
 
@@ -55,40 +54,45 @@ class UserResource extends Resource
         return $form
             ->schema([
 
-                Section::make('Sobre tu Información Personal')->columns(4)
+                Section::make('Sobre tu Información Personal')->columns(3)
                     ->description('Tus datos personales son importantes para validar tu relación al condominio')
                     ->schema([
                         Forms\Components\TextInput::make('name')->label('Nombre y Apellido')
-                            ->required(),
+                            ->required()->autofocus(),
+
                         Forms\Components\TextInput::make('email')->label('Correo')
-                            ->email()->required(),
+                            ->email()->required()->unique(table: User::class),
+
                         Forms\Components\TextInput::make('password')->label('Contraseña')
-                            ->password()->required(),
+                            ->required()->password()->hiddenOn('edit'),
+
                         Forms\Components\TextInput::make('cellphone')->label('Teléfono')
-                            ->required(),
+                            ->required()->tel()->length(9)
+                            ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/'),
+
                         Forms\Components\Select::make('country')->label('País')
                             ->options(function () { return self::getCountriesList(); })
-                            ->required(),
+                            ->required()->placeholder('Selecciona una opción'),
+
                         Forms\Components\Select::make('doc_type')->label('Tipo de Documento')
                             ->options(['DNI' => 'DNI - Documento Nacional de Identidad',
                             'CE' => 'CE - Carnet de Extranjería','PTP' => 'PTP - Permiso Temporal de Permanencia','PAS' => 'PAS - Pasaporte',])
-                            ->required(),
+                            ->required()->placeholder('Selecciona una opción'),
+
                         Forms\Components\TextInput::make('document')->label('Nro. de Documento')
-                            ->required(),
-                        Forms\Components\TextInput::make('address')->label('Dirección')
-                            ->required(),
+                            ->required()->numeric()->length(8)->unique(table: User::class),
                     ]),
 
-                Section::make('Sobre el Condominio')->columns(2)
+                Section::make('Sobre el Condominio')->columns(3)
                     ->description('Los detalles sobre tu rol dentro del Condominio son esenciales para la seguridad de todos')
                     ->schema([
                         Forms\Components\Select::make('condominium_id')->label('Condominio Asignado')
-                            ->relationship(name:'condominium', titleAttribute:'name')
-                            ->preload()->live()->required(),
-                        Forms\Components\Select::make('user.role')->label('Area')
-                            ->options(['0' => 'Residente', '1' => 'Vigilante', '2' => 'Mantenimiento',
-                            '3' => 'Supervisor', '4' => 'Delegado', '5' => 'Administrador', '6' => 'Gerente'])
-                            ->required(),
+                            ->required()->relationship(name:'condominium', titleAttribute:'name')
+                            ->preload()->live()->placeholder('Selecciona una opción'),
+
+                        Forms\Components\Select::make('role_id')->label('Area')
+                            ->required()->relationship(name:'role', titleAttribute:'name')
+                            ->preload()->live()->placeholder('Selecciona una opción'),
                     ]),
             ]);
     }
@@ -101,11 +105,18 @@ class UserResource extends Resource
         return $table
             ->columns([
                 
+                Tables\Columns\ImageColumn::make('profile_img')->label('')
+                    ->circular(),
+                    
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
                     ->searchable()->wrap()->description(
                         fn (User $record): string => "{$record->doc_type} {$record->document}"),
 
-                Tables\Columns\TextColumn::make('role.name')->label('Tipo')
+                Tables\Columns\TextColumn::make('email')->label('Contacto')
+                    ->searchable()->wrap()->description(
+                        fn (User $record): string => $record->cellphone),
+
+                Tables\Columns\TextColumn::make('role.name')->label('Área')
                     ->searchable()->badge()->color(
                         fn (string $state): string => match ($state) {
                         'Residente' => 'gray', 'Vigilante' => 'info',
@@ -121,17 +132,27 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('condominium.name')->label('Condominio')
                     ->searchable()->wrap()->description(
                         fn (User $record): string => "{$record->condominium->address}"),
-
-                Tables\Columns\TextColumn::make('address')->label('Dirección'),
-
                 ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                    Tables\Actions\EditAction::make(),
 
-                    Tables\Actions\DeleteAction::make(),
+
+            ->filters([
+                SelectFilter::make('condominium')->label('Condominio')
+                    ->relationship('condominium', 'name'),
+
+                SelectFilter::make('role_id')->label('Área')
+                    ->options([
+                        '3' => 'Vigilante',
+                        '4' => 'Mantenimiento',
+                        '5' => 'Supervisor',
+                        '6' => 'Administrador',
+                        '7' => 'Gerente',
+                    ]) //TODO: AJUSTAR FACTORIES Y SEEDERS CON ESTOS IDs DE ROLES, EVITAR DUPLICADOS
+            ])
+
+
+            ->actions([
+                Tables\Actions\EditAction::make()->label(''),
+                Tables\Actions\DeleteAction::make()->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

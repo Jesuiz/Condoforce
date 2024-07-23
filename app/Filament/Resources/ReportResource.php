@@ -9,6 +9,8 @@ use App\Models\Inventory;
 use App\Models\Report;
 use App\Models\Task;
 
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\ReportResource\Pages;
 use App\Filament\Resources\ReportResource\RelationManagers;
 use Filament\Forms;
@@ -74,16 +76,30 @@ class ReportResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('description')->label('Descripción')
-                    ->searchable()->wrap(),
+                    ->searchable()->wrap()->lineClamp(3),
 
             ])
+
+
             ->filters([
-                //
-            ])
+                SelectFilter::make('condominium')->label('Condominio')
+                    ->relationship('condominium', 'name'),
+                
+                SelectFilter::make('area')->label('Área')
+                    ->options([
+                        '1' => 'Residente',
+                        '2' => 'Delegación',
+                        '3' => 'Vigilancia',
+                        '4' => 'Mantenimiento',
+                        '5' => 'Supervisión',
+                        '6' => 'Administración',
+                        '7' => 'Gerencia' ]),
+                ])
+
+
             ->actions([
-                Tables\Actions\EditAction::make(),
-                    
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->label(''),
+                Tables\Actions\DeleteAction::make()->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

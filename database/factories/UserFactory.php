@@ -15,8 +15,11 @@ class UserFactory extends Factory
 
     public function definition(): array
     {
+        $name = $this->faker->name();
+        $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($name);
+
         return [
-            'name' => $this->faker->name(),
+            'name' => $name,
             'email' => $this->faker->unique()->safeEmail(),
             'password' => bcrypt('123'),
             'country' => $this->faker->countryCode(),
@@ -25,6 +28,7 @@ class UserFactory extends Factory
             'cellphone' => $this->faker->numerify('#########'),
             'address' => $this->faker->streetAddress(),
             'profile_img' => $this->faker->imageUrl(640, 480, 'people', true, 'Faker'),
+            'profile_img' => $avatarUrl,
             'condominium_id' => function () {
                 return \App\Models\Condominium::inRandomOrder()->first()->id; },
             'role_id' => function () {

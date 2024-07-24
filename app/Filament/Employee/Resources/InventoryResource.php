@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Employee\Resources;
 
 use App\Models\User;
 use App\Models\Role;
@@ -9,25 +9,37 @@ use App\Models\Inventory;
 use App\Models\Report;
 use App\Models\Task;
 
-use App\Filament\Resources\InventoryResource\Pages;
-use App\Filament\Resources\InventoryResource\RelationManagers;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use App\Filament\Employee\Resources\InventoryResource\Pages;
+use App\Filament\Employee\Resources\InventoryResource\RelationManagers;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Support\Enums\ActionSize;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Support\Enums\IconPosition;
+use Filament\Support\Enums\Alignment;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\DatePicker;
+use Illuminate\Support\HtmlString;
+
 
 class InventoryResource extends Resource
 {
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 3;
     protected static ?string $model = Inventory::class;
-    protected static ?string $navigationGroup = 'Condominios';
+    protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationLabel = 'Inventario';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -40,14 +52,7 @@ class InventoryResource extends Resource
                     ->required(),
 
                 Forms\Components\TextInput::make('units')->label('Unidades')
-                    ->required()->badge()
-                    ->icon(function ($state) {
-                        $state = (int)$state;
-                        if ($state < 10) {
-                            return 'heroicon-o-calculator'; }
-                        elseif ($state < 100) { return 'heroicon-o-calculator'; }
-                            return 'heroicon-o-user-circle';
-                    }),
+                    ->required(),
 
                 Forms\Components\TextInput::make('amount')->label('Monto')
                     ->required(),
@@ -71,7 +76,7 @@ class InventoryResource extends Resource
                     ->description(fn (Inventory $record): string => $record->description),
 
                 Tables\Columns\TextColumn::make('category')->label('Área')
-                    ->searchable()->sortable()->badge()
+                    ->searchable()->sortable()->badge()->alignment(Alignment::Center)
                     ->color(fn (string $state): string => match ($state) {
                         'Mantenimiento' => 'info', 'Jardinería' => 'emerald', 'Iluminación' => 'warning',
                         'Limpieza' => 'emerald', 'Seguridad' => 'info', 'Suministros' => 'violet',
@@ -82,16 +87,18 @@ class InventoryResource extends Resource
                         'Mobiliario' => 'heroicon-o-cube', 'Tecnología' => 'heroicon-o-cpu-chip', 'Materiales' => 'heroicon-o-archive-box'}),
 
                 Tables\Columns\TextColumn::make('units')->label('Unidades')
-                    ->sortable()->searchable()->badge()->color('gray')->suffix('und')
-                    ->icon(function (Inventory $record) {
+                    ->sortable()->searchable()->badge()->color('gray')->suffix(' und')
+                    ->alignment(Alignment::Center)->icon(function (Inventory $record) {
                         if ($record->units < 20) { return 'heroicon-o-exclamation-triangle'; }
                     }),
 
-                Tables\Columns\TextColumn::make('expiration')->label('Expiración')
-                    ->sortable()->date()->placeholder('No expira'),
-
-                Tables\Columns\TextColumn::make('created_at')->label('Añadido')
-                    ->sortable()->since(),
+                Tables\Columns\TextColumn::make('created_at')->label('Comprado')
+                    ->sortable()->date('d-m-Y')->size(TextColumn\TextColumnSize::ExtraSmall)->alignment(Alignment::Center)
+                    ->description(function (Inventory $record): HtmlString {
+                        if ($record->expiration) {
+                            return new HtmlString("<span class='text-xs text-gray-400'>Expira el {$record->expiration}</span>");
+                        }   return new HtmlString("<span class='text-xs text-gray-400'>No expira</span>");
+                    }),
 
                 Tables\Columns\TextColumn::make('amount')->label('Costo')
                     ->sortable()->icon('heroicon-m-currency-dollar')
@@ -104,11 +111,16 @@ class InventoryResource extends Resource
                 //
             ])
 
-            
+
             ->actions([
-                Tables\Actions\EditAction::make()->label(''),
-                Tables\Actions\DeleteAction::make()->label(''),
+                Tables\Actions\ViewAction::make()->label(''),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->label('Editar'),
+                    Tables\Actions\DeleteAction::make()->label('Borrar'),
+                ])->iconButton()->color('gray')->size('lg')->tooltip('Acciones')
             ])
+
+            
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -130,10 +142,5 @@ class InventoryResource extends Resource
             'create' => Pages\CreateInventory::route('/create'),
             'edit' => Pages\EditInventory::route('/{record}/edit'),
         ];
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
     }
 }

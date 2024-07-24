@@ -14,16 +14,17 @@ class TaskFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->sentence(2, 4),
             'description' => $this->faker->paragraph,
             'area' => $this->faker->randomElement(Task::$areas),
             'status' => $this->faker->randomElement(Task::$statuses),
             'time_limit' => $this->faker->numberBetween(1, 72),
-            'reason' => $this->faker->optional()->sentence,
             'user_id' => function () {
                 return \App\Models\User::inRandomOrder()->first()->id; },
             'condominium_id' => function () {
                 return \App\Models\Condominium::inRandomOrder()->first()->id; },
+            'report_id' => function () {
+                return \App\Models\Report::inRandomOrder()->first()->id; },
         ];
     }
 }

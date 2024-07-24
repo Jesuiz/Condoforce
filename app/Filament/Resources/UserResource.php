@@ -107,9 +107,9 @@ class UserResource extends Resource
                 
                 Tables\Columns\ImageColumn::make('profile_img')->label('')
                     ->circular(),
-                    
+                
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
-                    ->searchable()->wrap()->description(
+                    ->searchable()->description(
                         fn (User $record): string => "{$record->doc_type} {$record->document}"),
 
                 Tables\Columns\TextColumn::make('email')->label('Contacto')

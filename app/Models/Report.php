@@ -29,4 +29,9 @@ class Report extends Model
     {
         return $this->belongsTo(Condominium::class);
     }
+
+    public function task()
+    {
+        return $this->hasOne(User::class);
+    }
 }

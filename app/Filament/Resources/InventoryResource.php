@@ -19,6 +19,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Support\Enums\IconPosition;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DateTimePicker;
+
 
 class InventoryResource extends Resource
 {
@@ -41,26 +44,22 @@ class InventoryResource extends Resource
 
                 Forms\Components\TextInput::make('description')->label('Descripción')
                     ->required(),
-
+                    
+                Forms\Components\Select::make('category')->label('Categoría')
+                    ->required()->options([
+                        'Mantenimiento' => 'Mantenimiento', 'Jardinería' => 'Jardinería', 'Iluminación' => 'Iluminación',
+                        'Limpieza' => 'Limpieza', 'Seguridad' => 'Seguridad', 'Suministros' => 'Suministros',
+                        'Mobiliario' => 'Mobiliario', 'Tecnología' => 'Tecnología', 'Materiales' => 'Materiales',
+                    ])->placeholder('Selecciona una opción'),
+                
                 Forms\Components\TextInput::make('units')->label('Unidades')
-                    ->required()->badge()
-                    ->icon(function ($state) {
-                        $state = (int)$state;
-                        if ($state < 10) {
-                            return 'heroicon-o-calculator'; }
-                        elseif ($state < 100) { return 'heroicon-o-calculator'; }
-                            return 'heroicon-o-user-circle';
-                    }),
+                    ->required()->numeric()->minValue(1)->maxValue(999),
 
                 Forms\Components\TextInput::make('amount')->label('Monto')
-                    ->required(),
+                    ->required()->numeric()->minValue(1)->maxValue(9999),
 
-                Forms\Components\TextInput::make('expiration')->label('Expiración')
-                    ->required(),
-
-                Forms\Components\TextInput::make('user_id')->label('Añadido por')
-                    ->required(),
-
+                Forms\Components\DatePicker::make('expiration')->label('Expiración')
+                    ->required()->nullable(),
             ]);
     }
 

@@ -22,23 +22,21 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
-use Filament\Support\Enums\ActionSize;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
-use Filament\Support\Enums\Alignment;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\DatePicker;
-use Illuminate\Support\HtmlString;
+use Filament\Support\Enums\IconPosition;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DateTimePicker;
 
 
 class InventoryResource extends Resource
 {
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 5;
     protected static ?string $model = Inventory::class;
-    
+
     protected static ?string $slug = 'inventario';
-    protected static ?string $label = 'Productos';
+    protected static ?string $label = 'Productos en Inventario';
     protected static ?string $navigationLabel = 'Inventario';
     protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -47,7 +45,7 @@ class InventoryResource extends Resource
     {
         return parent::getEloquentQuery()->where('user_id', Auth::user()->id);
     }
-    
+
 
     public static function form(Form $form): Form
     {
@@ -59,19 +57,22 @@ class InventoryResource extends Resource
 
                 Forms\Components\TextInput::make('description')->label('Descripción')
                     ->required(),
-
+                    
+                Forms\Components\Select::make('category')->label('Categoría')
+                    ->required()->options([
+                        'Mantenimiento' => 'Mantenimiento', 'Jardinería' => 'Jardinería', 'Iluminación' => 'Iluminación',
+                        'Limpieza' => 'Limpieza', 'Seguridad' => 'Seguridad', 'Suministros' => 'Suministros',
+                        'Mobiliario' => 'Mobiliario', 'Tecnología' => 'Tecnología', 'Materiales' => 'Materiales',
+                    ])->placeholder('Selecciona una opción'),
+                
                 Forms\Components\TextInput::make('units')->label('Unidades')
-                    ->required(),
+                    ->required()->numeric()->minValue(1)->maxValue(999),
 
                 Forms\Components\TextInput::make('amount')->label('Monto')
-                    ->required(),
+                    ->required()->numeric()->minValue(1)->maxValue(9999),
 
-                Forms\Components\TextInput::make('expiration')->label('Expiración')
-                    ->required(),
-
-                Forms\Components\TextInput::make('user_id')->label('Añadido por')
-                    ->required(),
-
+                Forms\Components\DatePicker::make('expiration')->label('Expiración')
+                    ->required()->nullable(),
             ]);
     }
 
@@ -85,7 +86,7 @@ class InventoryResource extends Resource
                     ->description(fn (Inventory $record): string => $record->description),
 
                 Tables\Columns\TextColumn::make('category')->label('Área')
-                    ->searchable()->sortable()->badge()->alignment(Alignment::Center)
+                    ->searchable()->sortable()->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'Mantenimiento' => 'info', 'Jardinería' => 'emerald', 'Iluminación' => 'warning',
                         'Limpieza' => 'emerald', 'Seguridad' => 'info', 'Suministros' => 'violet',
@@ -96,18 +97,16 @@ class InventoryResource extends Resource
                         'Mobiliario' => 'heroicon-o-cube', 'Tecnología' => 'heroicon-o-cpu-chip', 'Materiales' => 'heroicon-o-archive-box'}),
 
                 Tables\Columns\TextColumn::make('units')->label('Unidades')
-                    ->sortable()->searchable()->badge()->color('gray')->suffix(' und')
-                    ->alignment(Alignment::Center)->icon(function (Inventory $record) {
+                    ->sortable()->searchable()->badge()->color('gray')->suffix('und')
+                    ->icon(function (Inventory $record) {
                         if ($record->units < 20) { return 'heroicon-o-exclamation-triangle'; }
                     }),
 
-                Tables\Columns\TextColumn::make('created_at')->label('Comprado')
-                    ->sortable()->date('d-m-Y')->size(TextColumn\TextColumnSize::ExtraSmall)->alignment(Alignment::Center)
-                    ->description(function (Inventory $record): HtmlString {
-                        if ($record->expiration) {
-                            return new HtmlString("<span class='text-xs text-gray-400'>Expira el {$record->expiration}</span>");
-                        }   return new HtmlString("<span class='text-xs text-gray-400'>No expira</span>");
-                    }),
+                Tables\Columns\TextColumn::make('expiration')->label('Expiración')
+                    ->sortable()->date()->placeholder('No expira'),
+
+                Tables\Columns\TextColumn::make('created_at')->label('Añadido')
+                    ->sortable()->since(),
 
                 Tables\Columns\TextColumn::make('amount')->label('Costo')
                     ->sortable()->icon('heroicon-m-currency-dollar')
@@ -120,7 +119,7 @@ class InventoryResource extends Resource
                 //
             ])
 
-
+            
             ->actions([
                 Tables\Actions\ViewAction::make()->label(''),
                 Tables\Actions\ActionGroup::make([
@@ -129,7 +128,7 @@ class InventoryResource extends Resource
                 ])->iconButton()->color('gray')->size('lg')->tooltip('Acciones')
             ])
 
-            
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -152,4 +151,9 @@ class InventoryResource extends Resource
             'edit' => Pages\EditInventory::route('/{record}/edit'),
         ];
     }
+
+    /* public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    } */
 }

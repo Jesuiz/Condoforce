@@ -27,9 +27,10 @@ class CondominiumResource extends Resource
     protected static ?int $navigationSort = 1;
     protected static ?string $model = Condominium::class;
 
-    protected static ?string $modelLabel = 'condominios';
-    protected static ?string $navigationGroup = 'Condominios';
+    protected static ?string $slug = 'condominios';
+    protected static ?string $label = 'Lista de Condominios';
     protected static ?string $navigationLabel = 'Condominios';
+    protected static ?string $navigationGroup = 'Condominios';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
 
@@ -114,8 +115,8 @@ class CondominiumResource extends Resource
         ];
     }
 
-    public static function getNavigationBadge(): ?string
+    /* public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
-    }
+    } */
 }

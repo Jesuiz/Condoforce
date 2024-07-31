@@ -25,6 +25,7 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Support\Enums\ActionSize;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\DatePicker;
@@ -35,11 +36,19 @@ class InventoryResource extends Resource
 {
     protected static ?int $navigationSort = 3;
     protected static ?string $model = Inventory::class;
-    protected static ?string $navigationGroup = 'Condominio';
+    
+    protected static ?string $slug = 'inventario';
+    protected static ?string $label = 'Productos';
     protected static ?string $navigationLabel = 'Inventario';
+    protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id);
+    }
     
+
     public static function form(Form $form): Form
     {
         return $form

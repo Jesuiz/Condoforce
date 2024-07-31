@@ -34,8 +34,11 @@ class EmployeeResource extends Resource
 {
     protected static ?int $navigationSort = 1;
     protected static ?string $model = User::class;
-    protected static ?string $navigationGroup = 'Usuarios';
+
+    protected static ?string $slug = 'empleados';
+    protected static ?string $label = 'Lista de Empleados';
     protected static ?string $navigationLabel = 'Empleados';
+    protected static ?string $navigationGroup = 'Usuarios';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
     public static function getCountriesList()
@@ -190,8 +193,8 @@ class EmployeeResource extends Resource
         ];
     }
 
-    public static function getNavigationBadge(): ?string
+    /* public static function getNavigationBadge(): ?string
     {
         return static::getModel()::whereIn('role_id', [3,4,5,6,7])->count();
-    }
+    } */
 }

@@ -32,8 +32,11 @@ class ReportResource extends Resource
 {
     protected static ?int $navigationSort = 2;
     protected static ?string $model = Report::class;
-    protected static ?string $navigationGroup = 'Condominio';
+
+    protected static ?string $slug = 'incidencias';
+    protected static ?string $label = 'Incidencias';
     protected static ?string $navigationLabel = 'Incidencias';
+    protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     public static function getEloquentQuery(): Builder

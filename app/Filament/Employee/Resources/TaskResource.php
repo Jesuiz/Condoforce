@@ -2,6 +2,7 @@
 
 namespace App\Filament\Employee\Resources;
 
+use App\Models\User;
 use App\Models\Role;
 use App\Models\Condominium;
 use App\Models\Inventory;
@@ -25,13 +26,22 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\Alignment;
+use Filament\Forms\Get;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+
 
 class TaskResource extends Resource
 {
     protected static ?int $navigationSort = 1;
     protected static ?string $model = Task::class;
-    protected static ?string $navigationGroup = 'Condominio';
+
+    protected static ?string $slug = 'actividades';
+    protected static ?string $label = 'Actividades';
     protected static ?string $navigationLabel = 'Actividades';
+    protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function getEloquentQuery(): Builder
@@ -60,11 +70,27 @@ class TaskResource extends Resource
                 Forms\Components\TextInput::make('time_limit')->label('Límite de Tiempo')
                     ->required(),
 
-                Forms\Components\TextInput::make('user_id')->label('Responsable')
+                Forms\Components\TextInput::make('user_id')->label('Empleado designado')
                     ->required(),
                 
-                Forms\Components\TextInput::make('condominium_id')->label('Condominio')
+                Forms\Components\TextInput::make('condominium_id')->label('Condominio del empleado')
                     ->required(),
+/* 
+                Forms\Components\Radio::make('asiggment')->label('¿Desea asignarlo a un reporte?')
+                    ->boolean()->live(), */
+
+                Forms\Components\CheckboxList::make('asiggment')->label('¿Desea asignarlo a un reporte?')
+                    ->live()->options([
+                        'asiggment_false' => 'Sin asignar',
+                        'asiggment_true' => 'Asignar reporte', ])
+                        ->descriptions([
+                            'asiggment_false' => 'Marca esta opción si no es necesario relacionar esta tarea a un reporte',
+                            'asiggment_true' => 'Esta actividad se relacionará con un reporte ya creado',
+                        ]),
+
+                Forms\Components\Select::make('report_id')->label('Selecciona el reporte')
+                    ->searchable()->options(Report::all()->pluck('name', 'id'))
+                    ->visible(fn (Get $get): bool => $get('asiggment')),
             ]);
     }
 

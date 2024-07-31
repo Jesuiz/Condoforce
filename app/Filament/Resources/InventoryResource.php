@@ -24,8 +24,11 @@ class InventoryResource extends Resource
 {
     protected static ?int $navigationSort = 5;
     protected static ?string $model = Inventory::class;
-    protected static ?string $navigationGroup = 'Condominios';
+
+    protected static ?string $slug = 'inventario';
+    protected static ?string $label = 'Productos en Inventario';
     protected static ?string $navigationLabel = 'Inventario';
+    protected static ?string $navigationGroup = 'Condominios';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -132,8 +135,8 @@ class InventoryResource extends Resource
         ];
     }
 
-    public static function getNavigationBadge(): ?string
+    /* public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
-    }
+    } */
 }

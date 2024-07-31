@@ -36,6 +36,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
     protected static ?string $navigationGroup = 'Usuarios';
     protected static ?string $navigationLabel = 'Residentes';
+    protected static ?string $slug = 'residentes';
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function getCountriesList()

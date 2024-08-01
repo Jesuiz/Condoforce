@@ -24,6 +24,7 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Section;
 use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\Alignment;
 use Filament\Forms\Get;
@@ -31,6 +32,8 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
 
 
 class TaskResource extends Resource
@@ -44,10 +47,10 @@ class TaskResource extends Resource
     protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
-    public static function getEloquentQuery(): Builder
+/*     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('user_id', Auth::user()->id);
-    }
+    } */
 
 
     public static function form(Form $form): Form
@@ -55,53 +58,57 @@ class TaskResource extends Resource
         return $form
 
             ->schema([
-                Forms\Components\TextInput::make('name')->label('Nombre')
-                    ->required(),
+                Section::make('Sobre la Actividad')->columns(4)
+                    ->description('Crea una actividad o tarea y designala un empleado que la ejecute en un tiempo límite.')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')->label('Nombre')
+                        ->required(),
 
-                Forms\Components\TextInput::make('description')->label('Descripción')
-                    ->required(),
+                        Forms\Components\Select::make('area')->label('Área')
+                            ->required()->placeholder('Selecciona una opción')
+                            ->options([ 'Residente' => 'Residente', 'Vigilancia' => 'Vigilancia',
+                                        'Mantenimiento' => 'Mantenimiento', 'Supervisión' => 'Supervisión',
+                                        'Delegación' => 'Delegación', 'Administración' => 'Administración',
+                                        'Gerencia' => 'Gerencia',]),
+                        
+                        Forms\Components\TextInput::make('time_limit')->label('Límite de Tiempo')
+                            ->required()->numeric()->minValue(1)->maxValue(744)->suffix('Horas'),
 
-                Forms\Components\TextInput::make('area')->label('Área')
-                    ->required(),
-                    
-                Forms\Components\TextInput::make('status')->label('Status')
-                    ->required(),
-                
-                Forms\Components\TextInput::make('time_limit')->label('Límite de Tiempo')
-                    ->required(),
+                        Forms\Components\Select::make('user_id')->label('Empleado designado')
+                            ->searchable()->options(User::all()->pluck('name', 'id'))
+                            ->placeholder('Selecciona una opción'),
+                        
+                        Forms\Components\Textarea::make('description')->label('Descripción')
+                            ->required()->maxLength(1024)
+                            ->helperText('Describe la actividad o tarea que se debe realizar con lujo de detalle.')
+                            ->columnSpan(['sm' => 2,'xl' => 3,'2xl' => 4,]),
+                    ]),
 
-                Forms\Components\TextInput::make('user_id')->label('Empleado designado')
-                    ->required(),
-                
-                Forms\Components\TextInput::make('condominium_id')->label('Condominio del empleado')
-                    ->required(),
-/* 
-                Forms\Components\Radio::make('asiggment')->label('¿Desea asignarlo a un reporte?')
-                    ->boolean()->live(), */
+                 Section::make('Sobre el Reporte')->columns(1)
+                    ->description('Opcionalmente puedes relacionar la actividad con un reporte creado, por ejemplo, para solucionar la queja de un residente.')
+                    ->schema([
+                        Forms\Components\Select::make('report_id')->label('Reporte')
+                            ->relationship(name:'report', titleAttribute:'name')
+                            ->preload()->live()->placeholder('Selecciona una opción'),
+                    ]),
 
-                Forms\Components\CheckboxList::make('asiggment')->label('¿Desea asignarlo a un reporte?')
-                    ->live()->options([
-                        'asiggment_false' => 'Sin asignar',
-                        'asiggment_true' => 'Asignar reporte', ])
-                        ->descriptions([
-                            'asiggment_false' => 'Marca esta opción si no es necesario relacionar esta tarea a un reporte',
-                            'asiggment_true' => 'Esta actividad se relacionará con un reporte ya creado',
-                        ]),
-
-                Forms\Components\Select::make('report_id')->label('Selecciona el reporte')
-                    ->searchable()->options(Report::all()->pluck('name', 'id'))
-                    ->visible(fn (Get $get): bool => $get('asiggment')),
+                Forms\Components\Hidden::make('condominium_id')
+                    ->default(fn () => Auth::user()->condominium_id)
+                    ->required(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No hay actividades registradas')->emptyStateIcon('heroicon-o-clipboard-document-list')
+            ->emptyStateDescription('Cuando tengas tareas asignadas, las verás aquí.')
             ->columns([
                 
-                Tables\Columns\TextColumn::make('name')->label('Nombre')
-                    ->sortable()->searchable()->wrap()
-                    ->description(fn (Task $record): string => $record->description),
+                Tables\Columns\TextColumn::make('name')->label('Actividad')
+                    ->sortable()->searchable()->wrap()->description(
+                        fn (Task $record): string => implode(' ', array_slice(str_word_count($record->description, 1), 0, 12)) . (str_word_count($record->description) > 12 ? '...' : '')
+                    ), //limita la descripción a 12 palabras como máximo
 
                 Tables\Columns\TextColumn::make('area')->label('Área')
                     ->searchable()->sortable()->badge()->alignment(Alignment::Center)
@@ -115,24 +122,23 @@ class TaskResource extends Resource
                         'Administración' => 'heroicon-o-calculator', 'Gerencia' => 'heroicon-o-star',
                         'Delegación' => 'heroicon-o-user-group'}),
 
-                Tables\Columns\IconColumn::make('status')->label('Status')
-                    ->alignment(Alignment::Center)
-                    ->tooltip(fn (string $state): string => match ($state) {
-                        'Asignado' => 'Asignado', 'En Desarrollo' => 'En Desarrollo',
-                        'Finalizado' => 'Finalizado', 'Fallido' => 'Fallido', default => 'Sin asignar'})
-                    ->color(fn (string $state): string => match ($state) {
-                        'Asignado' => 'warning', 'En Desarrollo' => 'info',
-                        'Finalizado' => 'success', 'Fallido' => 'danger', default => 'gray'})
+                Tables\Columns\TextColumn::make('status')->label('Status')
+                    ->alignment(Alignment::Center)->size(TextColumn\TextColumnSize::ExtraSmall)
                     ->icon(fn (string $state): string => match ($state) {
                         'Asignado' => 'heroicon-o-exclamation-circle', 'En Desarrollo' => 'heroicon-o-ellipsis-horizontal-circle',
-                        'Finalizado' => 'heroicon-o-check-circle', 'Fallido' => 'heroicon-o-x-circle', default => 'heroicon-o-question-mark-circle'}),
+                        'Finalizado' => 'heroicon-o-check-circle', 'Fallido' => 'heroicon-o-x-circle',
+                        default => 'heroicon-o-question-mark-circle'})
+                    ->color(fn (string $state): string => match ($state) {
+                        'Asignado' => 'warning', 'En Desarrollo' => 'info',
+                        'Finalizado' => 'success', 'Fallido' => 'danger', default => 'gray'}),
+                //TODO: Al finalizar una tarea, debe cambiar el time_limit a 'ninguno',deshabilitarse el checkbox y archivarse en 'completadas'.
 
                 Tables\Columns\TextColumn::make('time_limit')->label('Límite')
-                    ->searchable()->suffix('/h')->alignment(Alignment::Center)->placeholder('Ninguno'),
+                    ->suffix('/h')->alignment(Alignment::Center)->placeholder('Ninguno'),
 
-                Tables\Columns\CheckboxColumn::make('finish')->label('Finalizado')
-                    ->searchable()->alignment(Alignment::Center),
-                    //TODO: Al finalizar una tarea, debe cambiar el time_limit a 'ninguno',deshabilitarse el checkbox y archivarse en 'completadas'.
+                Tables\Columns\TextColumn::make('created_at')->label('Fecha')
+                    ->sortable()->date('d-m-Y')->size(TextColumn\TextColumnSize::ExtraSmall)->alignment(Alignment::Center),
+                    
             ])
 
 

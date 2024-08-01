@@ -114,6 +114,8 @@ class EmployeeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No hay empleados registrados')->emptyStateIcon('heroicon-o-users')
+            ->emptyStateDescription('Cuando haya empleados registrados, los verás aquí.')
             ->columns([
                 
                 Tables\Columns\ImageColumn::make('profile_img')->label('')

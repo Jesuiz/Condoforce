@@ -19,6 +19,7 @@ class TaskFactory extends Factory
             'area' => $this->faker->randomElement(Task::$areas),
             'status' => $this->faker->randomElement(Task::$statuses),
             'time_limit' => $this->faker->numberBetween(1, 72),
+            'finish' => $this->faker->numberBetween(0, 1),
             'user_id' => function () {
                 return \App\Models\User::inRandomOrder()->first()->id; },
             'condominium_id' => function () {

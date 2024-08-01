@@ -53,8 +53,10 @@ class ReportResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        
+            ->emptyStateHeading('No hay reportes registrados')->emptyStateIcon('heroicon-o-clipboard-document-check')
+            ->emptyStateDescription('Cuando hayan reportes registrados, los verás aquí.')
             ->columns([
+                
                 Tables\Columns\TextColumn::make('area')->label('Área')
                     ->searchable()->sortable()->badge()
                     ->color(fn (string $state): string => match ($state) {

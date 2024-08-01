@@ -68,10 +68,15 @@ class ReportResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No hay reportes registrados')->emptyStateIcon('heroicon-o-clipboard-document-check')
+            ->emptyStateDescription('Cuando hayan reportes registrados, los verás aquí.')
             ->columns([
+                    
                 Tables\Columns\TextColumn::make('name')->label('Incidencia')
-                    ->sortable()->searchable()->wrap()
-                    ->description(fn (Report $record): string => $record->description),
+                    ->sortable()->searchable()->wrap()->description(
+                        fn (Report $record): string => implode(' ', array_slice(str_word_count($record->description, 1), 0, 12)) . (str_word_count($record->description) > 12 ? '...' : '')
+                    ), //limita la descripción a 12 palabras como máximo
+
 
                 Tables\Columns\TextColumn::make('area')->label('Área')
                     ->searchable()->sortable()->badge()->alignment(Alignment::Center)

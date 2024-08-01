@@ -66,6 +66,8 @@ class InventoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No hay productos registrados')->emptyStateIcon('heroicon-o-rectangle-stack')
+            ->emptyStateDescription('Cuando tengas productos en el inventario, los verás aquí.')
             ->columns([
 
                 Tables\Columns\TextColumn::make('name')->label('Nombre')

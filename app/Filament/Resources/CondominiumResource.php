@@ -52,6 +52,8 @@ class CondominiumResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No hay condominios registrados')->emptyStateIcon('heroicon-o-users')
+            ->emptyStateDescription('Cuando haya condominios registrados, los verás aquí.')
             ->columns([
 
                 Tables\Columns\IconColumn::make('is_active')->label('Status')

@@ -104,6 +104,8 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No hay usuarios registrados')->emptyStateIcon('heroicon-o-users')
+            ->emptyStateDescription('Cuando haya usuarios registrados, los verás aquí.')
             ->columns([
                 
                 Tables\Columns\ImageColumn::make('profile_img')->label('')

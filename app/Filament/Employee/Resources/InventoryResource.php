@@ -25,9 +25,11 @@ use Filament\Tables\Actions\ViewAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\IconPosition;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Tables\Columns\TextColumn;
 
 
 class InventoryResource extends Resource
@@ -79,11 +81,14 @@ class InventoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No hay productos registrados')->emptyStateIcon('heroicon-o-rectangle-stack')
+            ->emptyStateDescription('Cuando tengas productos en el inventario, los verás aquí.')
             ->columns([
 
-                Tables\Columns\TextColumn::make('name')->label('Nombre')
-                    ->sortable()->searchable()->wrap()
-                    ->description(fn (Inventory $record): string => $record->description),
+                Tables\Columns\TextColumn::make('name')->label('Actividad')
+                    ->sortable()->searchable()->wrap()->description(
+                        fn (Inventory $record): string => implode(' ', array_slice(str_word_count($record->description, 1), 0, 16)) . (str_word_count($record->description) > 16 ? '...' : '')
+                    ), //limita la descripción a 16 palabras como máximo
 
                 Tables\Columns\TextColumn::make('category')->label('Área')
                     ->searchable()->sortable()->badge()
@@ -97,16 +102,17 @@ class InventoryResource extends Resource
                         'Mobiliario' => 'heroicon-o-cube', 'Tecnología' => 'heroicon-o-cpu-chip', 'Materiales' => 'heroicon-o-archive-box'}),
 
                 Tables\Columns\TextColumn::make('units')->label('Unidades')
-                    ->sortable()->searchable()->badge()->color('gray')->suffix('und')
+                    ->sortable()->searchable()->badge()->color('gray')->suffix(' und')->alignment(Alignment::Center)
                     ->icon(function (Inventory $record) {
                         if ($record->units < 20) { return 'heroicon-o-exclamation-triangle'; }
                     }),
 
                 Tables\Columns\TextColumn::make('expiration')->label('Expiración')
-                    ->sortable()->date()->placeholder('No expira'),
+                    ->sortable()->placeholder('No expira')
+                    ->date('d-m-Y')->size(TextColumn\TextColumnSize::ExtraSmall),
 
                 Tables\Columns\TextColumn::make('created_at')->label('Añadido')
-                    ->sortable()->since(),
+                    ->sortable()->since()->size(TextColumn\TextColumnSize::ExtraSmall),
 
                 Tables\Columns\TextColumn::make('amount')->label('Costo')
                     ->sortable()->icon('heroicon-m-currency-dollar')

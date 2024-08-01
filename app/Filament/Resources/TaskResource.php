@@ -50,8 +50,10 @@ class TaskResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-
+            ->emptyStateHeading('No hay actividades registradas')->emptyStateIcon('heroicon-o-clipboard-document-list')
+            ->emptyStateDescription('Cuando tengas tareas asignadas, las verás aquí.')
             ->columns([
+                
                 Tables\Columns\TextColumn::make('name')->label('Nombre')
                     ->searchable(),
 

@@ -12,9 +12,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->longText('description');
-            $table->string('area');
-            $table->string('status')->default('Asignado');
+            $table->enum('area', ['Residente', 'Vigilancia', 'Mantenimiento', 'Supervisión', 'Delegación', 'Administración', 'Gerencia']);
+            $table->enum('status', ['Asignado','En Desarrollo','Finalizado','Fallido'])->default('Asignado');
             $table->integer('time_limit')->nullable()->default(null);
+            $table->integer('finish')->nullable()->default(null);
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

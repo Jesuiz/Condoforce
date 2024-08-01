@@ -10,7 +10,7 @@ class Task extends Model
     use HasFactory;
     
     protected $table = 'tasks';
-    protected $fillable = ['name','description','area','status','time_limit','reason','user_id','condominium_id','report_id'];
+    protected $fillable = ['name','description','area','status','time_limit','finish','user_id','condominium_id','report_id'];
     public static $areas = ['Residente', 'Vigilancia', 'Mantenimiento', 'Supervisión', 'Delegación', 'Administración', 'Gerencia'];
     public static $statuses = ['Asignado', 'En Desarrollo', 'Finalizado', 'Fallido'];
 
@@ -24,9 +24,9 @@ class Task extends Model
                 throw new \InvalidArgumentException("Invalid area: {$task->area}");
             }
 
-            if (!in_array($task->status, self::$statuses)) {
+/*             if (!in_array($task->status, self::$statuses)) {
                 throw new \InvalidArgumentException("Invalid status: {$task->status}");
-            }
+            } */
         });
     }
     

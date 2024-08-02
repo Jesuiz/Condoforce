@@ -31,9 +31,6 @@ Facilita la designación y seguimiento de tareas dentro del condominio
 </b></p>
 <p align="center">
 Registro de tareas y actividades para empleados | Seguimiento al estado de las actividades registradas | Tiempo límite de ejecución de actividades | Relación con reportes de incidencias para dar solución
-</p>
-<p align="center">
-	<a target="_blank"><img  src="https://raw.githubusercontent.com/Jesuiz/Condoforce/main/public/readme_img/AdminPanel%20-%20Empleados.webp"  width="250"  alt="Tasks Module"></a>
 </p><br>
 
 <h1 align="center">4. Módulo de Incidencias</h1>
@@ -42,9 +39,6 @@ Permite el registro y seguimiento de incidencias o problemas reportados
 </b></p>
 <p align="center">
 Registro de incidencias por parte de residentes o empleados | Seguimiento del estado de resolución |  Relación con registros de actividades para dar solución | Generación de informes de incidencias
-</p>
-<p align="center">
-	<a target="_blank"><img  src="https://raw.githubusercontent.com/Jesuiz/Condoforce/main/public/readme_img/AdminPanel%20-%20Empleados.webp"  width="250"  alt="Reports Module"></a>
 </p><br>
 
 <h1 align="center">5. Módulo de Inventario</h1>

@@ -79,16 +79,9 @@ Pronto habilitaré una demo que te permitirá hacer uso del sistema gratuitament
 <p align="center">
 Este proyecto está bajo una Licencia de Software Propietario. Para el texto completo de la licencia, ver el archivo [LICENSE](LICENSE).
 <br><br>
-❌ Uso comercial 
-❌ Modificación 
-❌ Distribución 
-❌ Uso privado sin autorización
+❌ Uso comercial | ❌ Modificación | ❌ Distribución | ❌ Uso privado sin autorización
 </p><br>
 
 <h2 align="center">Contacto</h2>
-<p align="center">
-Si deseas añadir una sugerencia o adquirir el sistema, puedes contactarme al: +51 935 035 069 / jesuizmail@gmail.com.
-</p>
-<p><b align="center">
-+51 935 035 069 / jesuizmail@gmail.com.
-</b></p>
+<p align="center">Si deseas añadir una sugerencia o adquirir el sistema, puedes contactarme al:</p>
+<p align="center"><b>+51 935 035 069 / jesuizmail@gmail.com</b></p>

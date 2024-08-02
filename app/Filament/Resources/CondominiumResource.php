@@ -21,6 +21,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Support\Enums\Alignment;
 
 class CondominiumResource extends Resource
 {
@@ -57,7 +58,7 @@ class CondominiumResource extends Resource
             ->columns([
 
                 Tables\Columns\IconColumn::make('is_active')->label('Status')
-                    ->boolean()->sortable(),
+                    ->boolean()->sortable()->alignment(Alignment::Center),
 
                 Tables\Columns\TextColumn::make('name')->label('Condominio')
                     ->searchable()->wrap()->description(
@@ -65,7 +66,7 @@ class CondominiumResource extends Resource
                     /* ->url(fn (Condominium $record): string => route('condominium.details', ['condominium' => $record])) */,
                     
                 Tables\Columns\ImageColumn::make('user.profile_img')->label('')
-                    ->circular()->stacked()->limit(2)
+                    ->circular()->stacked()->limit(2)->alignment(Alignment::Center)
                     ->limitedRemainingText()->placeholder('Sin empleados'),
 
                 Tables\Columns\TextColumn::make('budget')->label('Presupuesto')

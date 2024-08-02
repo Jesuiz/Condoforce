@@ -23,10 +23,11 @@ class EmployeePanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->default()
             ->id('employee')
             ->path('employee')
-            ->default()
             ->login()
+            ->profile()
             ->colors([ 'primary' => Color::Blue ])
             ->collapsibleNavigationGroups(false)
             ->discoverResources(in: app_path('Filament/Employee/Resources'), for: 'App\\Filament\\Employee\\Resources')

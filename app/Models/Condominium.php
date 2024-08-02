@@ -20,13 +20,13 @@ class Condominium extends Model
         return $this->hasMany(User::class);
     }
     
-    public function inventory()
-    {
-        return $this->hasMany(Inventory::class);
-    }
-
     public function task()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function inventory()
+    {
+        return $this->hasMany(Inventory::class);
     }
 }

@@ -1,9 +1,15 @@
+
+<p align="center">
+    <a href="public\logo-white.webp" target="_blank">
+        <img src="public\logo-white.webp" width="250" alt="Condoforce Logo">
+    </a>
+</p>
 <h1 align="center">Sistema de Gestión de Condominios</h1>
 <p align="center">
 Este sistema proporciona una solución integral para la administración profesional de condominios, abarcando diversos aspectos desde la gestión de usuarios hasta el control de reportes e  incidencias y asignación de actividades a empleados. Está diseñado para registrar información importante, mejorar la eficiencia operativa, y facilitar la comunicación entre administradores, empleados y residentes.
 </p><br>
 
-<h1 align="center">1. Módulo de Usuarios</h1>
+<h1 align="center">Módulo de Usuarios</h1>
 <p align="center"><b>
 Administra tanto a los residentes como a los empleados de cada condominio
 </b></p>
@@ -11,10 +17,12 @@ Administra tanto a los residentes como a los empleados de cada condominio
 Registro y autenticación de usuarios | Asignación de roles y permisos: Residente, Delegado, Vigilante, y otros | Panel de control personalizado según el rol del usuario
 </p>
 <p align="center">
-	<a target="_blank"><img  src="public\readme_img\AdminPanel - Empleados.webp"  width="250"  alt="Users Module"></a>
+    <a href="public\readme_img\AdminPanel - Empleados.webp" target="_blank">
+        <img src="public\readme_img\AdminPanel - Empleados.webp" width="250" alt="Users Module">
+    </a>
 </p><br>
 
-<h1 align="center">2. Módulo de Condominios</h1>
+<h1 align="center">Módulo de Condominios</h1>
 <p align="center"><b>
 Gestiona los condominios y sy relación con los demás módulos del sistema
 </b></p>
@@ -22,10 +30,12 @@ Gestiona los condominios y sy relación con los demás módulos del sistema
 Registro y gestión de condominios | Gestión de residentes, empleados, actividades, reportes e inventario de cada condominio | Visualización detallada de cada condominio
 </p>
 <p align="center">
-	<a target="_blank"><img  src="public\readme_img\AdminPanel - Condominios.webp"  width="250"  alt="Condominiums Module"></a>
+    <a href="public/readme_img/AdminPanel - Condominios.webp" target="_blank">
+        <img src="public/readme_img/AdminPanel - Condominios.webp" width="250" alt="Condominiums Module">
+    </a>
 </p><br>
 
-<h1 align="center">3. Módulo de Actividades</h1>
+<h1 align="center">Módulo de Actividades</h1>
 <p align="center"><b>
 Facilita la designación y seguimiento de tareas dentro del condominio
 </b></p>
@@ -33,7 +43,7 @@ Facilita la designación y seguimiento de tareas dentro del condominio
 Registro de tareas y actividades para empleados | Seguimiento al estado de las actividades registradas | Tiempo límite de ejecución de actividades | Relación con reportes de incidencias para dar solución
 </p><br>
 
-<h1 align="center">4. Módulo de Incidencias</h1>
+<h1 align="center">Módulo de Incidencias</h1>
 <p align="center"><b>
 Permite el registro y seguimiento de incidencias o problemas reportados
 </b></p>
@@ -41,7 +51,7 @@ Permite el registro y seguimiento de incidencias o problemas reportados
 Registro de incidencias por parte de residentes o empleados | Seguimiento del estado de resolución |  Relación con registros de actividades para dar solución | Generación de informes de incidencias
 </p><br>
 
-<h1 align="center">5. Módulo de Inventario</h1>
+<h1 align="center"> Módulo de Inventario</h1>
 <p align="center"><b>
 Gestiona el control de bienes y suministros del condominio
 </b></p>
@@ -49,7 +59,9 @@ Gestiona el control de bienes y suministros del condominio
 Registro y categorización de items de inventario | Control de stock y modificación de und intuitiva | Generación de reportes de inventario
 </p>
 <p align="center">
-	<a target="_blank"><img  src="public\readme_img\EmployeePanel - Inventario.webp"  width="250"  alt="Inventory Module"></a>
+    <a href="public/readme_img/EmployeePanel - Inventario.webp" target="_blank">
+        <img src="public/readme_img/EmployeePanel - Inventario.webp" width="250" alt="Inventory Module">
+    </a>
 </p><br>
 
 <h1 align="center">Detalles del sistema</h1>
@@ -67,13 +79,13 @@ Pronto habilitaré una demo que te permitirá hacer uso del sistema gratuitament
 <p align="center">
 Este proyecto está bajo una Licencia de Software Propietario. Para el texto completo de la licencia, ver el archivo [LICENSE](LICENSE).
 <br><br>
-- ❌ Uso comercial
-- ❌ Modificación
-- ❌ Distribución
-- ❌ Uso privado sin autorización
+❌ Uso comercial 
+❌ Modificación 
+❌ Distribución 
+❌ Uso privado sin autorización
 </p><br>
 
 <h2 align="center">Contacto</h2>
 <p align="center">
-Si deseas añadir una sugerencia o adquirir el sistema, contáctame al: +51 935 035 069 o escribeme a: jesuizmail@gmail.com.
+Si deseas añadir una sugerencia o adquirir el sistema, puedes contactarme al: +51 935 035 069 / jesuizmail@gmail.com.
 </p><br>

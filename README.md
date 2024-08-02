@@ -18,7 +18,7 @@ Registro y autenticación de usuarios | Asignación de roles y permisos: Residen
 </p>
 <p align="center">
     <a href="public\readme_img\AdminPanel - Empleados.webp" target="_blank">
-        <img src="public\readme_img\AdminPanel - Empleados.webp" width="300" alt="Users Module">
+        <img src="public\readme_img\AdminPanel - Empleados.webp" width="450" alt="Users Module">
     </a>
 </p><br>
 
@@ -31,7 +31,7 @@ Registro y gestión de condominios | Gestión de residentes, empleados, activida
 </p>
 <p align="center">
     <a href="public/readme_img/AdminPanel - Condominios.webp" target="_blank">
-        <img src="public/readme_img/AdminPanel - Condominios.webp" width="300" alt="Condominiums Module">
+        <img src="public/readme_img/AdminPanel - Condominios.webp" width="450" alt="Condominiums Module">
     </a>
 </p><br>
 
@@ -60,7 +60,7 @@ Registro y categorización de items de inventario | Control de stock y modificac
 </p>
 <p align="center">
     <a href="public/readme_img/EmployeePanel - Inventario.webp" target="_blank">
-        <img src="public/readme_img/EmployeePanel - Inventario.webp" width="300" alt="Inventory Module">
+        <img src="public/readme_img/EmployeePanel - Inventario.webp" width="450" alt="Inventory Module">
     </a>
 </p><br>
 
@@ -89,6 +89,6 @@ Este proyecto está bajo una Licencia de Software Propietario. Para el texto com
 <p align="center">
 Si deseas añadir una sugerencia o adquirir el sistema, puedes contactarme al: +51 935 035 069 / jesuizmail@gmail.com.
 </p>
-<b align="center">
+<p><b align="center">
 +51 935 035 069 / jesuizmail@gmail.com.
-</b><br>
+</b></p>

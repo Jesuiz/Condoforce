@@ -118,6 +118,7 @@ class ReportResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make()->label(''),
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ExportAction::make()->label('Descargar'),
                     Tables\Actions\EditAction::make()->label('Editar'),
                     Tables\Actions\DeleteAction::make()->label('Borrar'),
                 ])->iconButton()->color('gray')->size('lg')->tooltip('Acciones')
@@ -126,8 +127,9 @@ class ReportResource extends Resource
 
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\ExportBulkAction::make()->label('Descargar Seleccionados'),
+                    Tables\Actions\DeleteBulkAction::make()->label('Borrar Seleccionados'),
+                ])->label('Acciones Masivas'),
             ]);
     }
 

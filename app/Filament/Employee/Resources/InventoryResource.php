@@ -38,7 +38,7 @@ class InventoryResource extends Resource
     protected static ?string $model = Inventory::class;
 
     protected static ?string $slug = 'inventario';
-    protected static ?string $label = 'Productos en Inventario';
+    protected static ?string $label = 'Inventario';
     protected static ?string $navigationLabel = 'Inventario';
     protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -85,17 +85,13 @@ class InventoryResource extends Resource
             ->emptyStateDescription('Cuando tengas productos en el inventario, los verás aquí.')
             ->columns([
 
-                Tables\Columns\TextColumn::make('name')->label('Actividad')
+                Tables\Columns\TextColumn::make('name')->label('Producto')
                     ->sortable()->searchable()->wrap()->description(
                         fn (Inventory $record): string => implode(' ', array_slice(str_word_count($record->description, 1), 0, 16)) . (str_word_count($record->description) > 16 ? '...' : '')
                     ), //limita la descripción a 16 palabras como máximo
 
-                Tables\Columns\TextColumn::make('category')->label('Área')
-                    ->searchable()->sortable()->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'Mantenimiento' => 'info', 'Jardinería' => 'emerald', 'Iluminación' => 'warning',
-                        'Limpieza' => 'emerald', 'Seguridad' => 'info', 'Suministros' => 'violet',
-                        'Mobiliario' => 'violet', 'Tecnología' => 'cyan', 'Materiales' => 'cyan'})
+                Tables\Columns\TextColumn::make('category')->label('Categoría')
+                    ->searchable()->sortable()->badge()->color('gray')->alignment(Alignment::Center)
                     ->icon(fn (string $state): string => match ($state) {
                         'Mantenimiento' => 'heroicon-o-key', 'Jardinería' => 'heroicon-o-sun', 'Iluminación' => 'heroicon-o-light-bulb',
                         'Limpieza' => 'heroicon-o-beaker', 'Seguridad' => 'heroicon-o-lock-closed', 'Suministros' => 'heroicon-o-inbox-stack',

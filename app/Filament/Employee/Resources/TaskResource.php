@@ -47,10 +47,10 @@ class TaskResource extends Resource
     protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
-/*     public static function getEloquentQuery(): Builder
+    public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('user_id', Auth::user()->id);
-    } */
+    }
 
 
     public static function form(Form $form): Form

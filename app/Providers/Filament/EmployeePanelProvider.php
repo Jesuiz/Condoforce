@@ -25,8 +25,9 @@ class EmployeePanelProvider extends PanelProvider
         return $panel
             ->id('employee')
             ->path('employee')
+            ->default()
             ->login()
-            ->colors([ 'primary' => Color::Green ])
+            ->colors([ 'primary' => Color::Blue ])
             ->collapsibleNavigationGroups(false)
             ->discoverResources(in: app_path('Filament/Employee/Resources'), for: 'App\\Filament\\Employee\\Resources')
             ->discoverPages(in: app_path('Filament/Employee/Pages'), for: 'App\\Filament\\Employee\\Pages')

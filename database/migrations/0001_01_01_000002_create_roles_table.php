@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->enum('name', ['Residente', 'Delegado', 'Vigilante', 'Mantenimiento', 'Supervisor', 'Administrador', 'Gerente']);
-            $table->decimal('salary', 10, 2);
+            $table->enum('name', ['Residente', 'Delegado', 'Vigilante', 'Supervisor', 'Mantenimiento', 'Administrador', 'Gerente']);
+            $table->decimal('salary', 10, 2)->nullable();
             $table->timestamps();
         });
     }

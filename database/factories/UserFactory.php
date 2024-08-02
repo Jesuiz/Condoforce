@@ -31,8 +31,7 @@ class UserFactory extends Factory
             'profile_img' => $avatarUrl,
             'condominium_id' => function () {
                 return \App\Models\Condominium::inRandomOrder()->first()->id; },
-            'role_id' => function () {
-                return \App\Models\Role::inRandomOrder()->first()->id; },
+            'role_id' => Role::inRandomOrder()->first()->id,
 
             'email_verified_at' => now(),
             'is_active' => $this->faker->boolean(),
@@ -40,7 +39,7 @@ class UserFactory extends Factory
         ];
     }
 
-    public function configure()
+/*     public function configure()
     {
         return $this->afterCreating(function (User $user) {
             Role::create([
@@ -48,7 +47,7 @@ class UserFactory extends Factory
                 'salary' => $this->faker->randomFloat(2, 1000, 5000),
             ]);
         });
-    }
+    } */
 
     public function unverified(): static
     {

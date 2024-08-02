@@ -13,7 +13,7 @@ class Role extends Model
 
     protected $table = 'roles';
     protected $fillable = ['name', 'salary'];
-    public static $areas = ['Residente', 'Vigilante', 'Mantenimiento', 'Supervisor', 'Delegado', 'Administrador', 'Gerente'];
+    public static $areas = ['Residente', 'Delegado', 'Vigilante', 'Supervisor', 'Mantenimiento', 'Administrador', 'Gerente'];
 
     public function user()
     {

@@ -38,9 +38,9 @@ class DatabaseSeeder extends Seeder
             'document' => '005180167',
             'cellphone' => '935035069',
             'address' => 'Edif. 2, Dpto. 503, Cond. Los Pinos - El Agustino',
-            'profile_img' => 'public/profile_img/jesus_ruiz.png',
-            'condominium_id' => $condominiums->first()->id,
-            'role_id' => $roles->first()->id,
+            'profile_img' => 'https://ui-avatars.com/api/?name=Jesus+Ruiz',
+            'condominium_id' => 1,
+            'role_id' => 7,
         ]);
 
         // Crear usuarios adicionales

@@ -21,11 +21,13 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Section;
+use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\Alignment;
 
 class CondominiumResource extends Resource
 {
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 4;
     protected static ?string $model = Condominium::class;
 
     protected static ?string $slug = 'condominios';
@@ -39,14 +41,36 @@ class CondominiumResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->label('Nombre')
-                    ->required(),
 
-                Forms\Components\TextInput::make('address')->label('Dirección')
-                    ->required(),
-                    
-                Forms\Components\TextInput::make('is_active')->label('Status')
-                    ->required(),
+                Section::make('Sobre el nuevo Condominio')->columns(3)
+                    ->description('Introduce los detalles del nuevo Condominio')
+                    ->schema([
+
+                        Forms\Components\TextInput::make('name')->label('Nombre')
+                            ->required(),
+
+                        Forms\Components\TextInput::make('address')->label('Dirección')
+                            ->required(),
+                            
+                        Forms\Components\TextInput::make('budget')->label('Presupuesto')
+                            ->required()->prefix('S/'),
+                    ]),
+                        
+/*                 Section::make('Sobre los usuarios  del nuevo Condominio')->columns(3)
+                    ->description('Introduce los detalles de los usuarios asignados al condominio')
+                    ->schema([
+
+                        Forms\Components\TextInput::make('name')->label('Nombre')
+                            ->required(),
+
+                        Forms\Components\TextInput::make('address')->label('Dirección')
+                            ->required(),
+                            
+                        Forms\Components\TextInput::make('budget')->label('Presupuesto')
+                            ->required(),
+                    ]), */
+
+                    //TODO: PLANIFICAR ASIGNACION DE USUARIOS, TAREAS, PRODUCTOS Y REPORTES AL NUEVO CONDOMINIO
             ]);
     }
 
@@ -62,8 +86,7 @@ class CondominiumResource extends Resource
 
                 Tables\Columns\TextColumn::make('name')->label('Condominio')
                     ->searchable()->wrap()->description(
-                        fn (Condominium $record): string => "{$record->address}")
-                    /* ->url(fn (Condominium $record): string => route('condominium.details', ['condominium' => $record])) */,
+                        fn (Condominium $record): string => "{$record->address}"),
                     
                 Tables\Columns\ImageColumn::make('user.profile_img')->label('')
                     ->circular()->stacked()->limit(2)->alignment(Alignment::Center)

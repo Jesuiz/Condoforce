@@ -36,7 +36,7 @@ class EmployeeResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $slug = 'empleados';
-    protected static ?string $label = 'Lista de Empleados';
+    protected static ?string $label = 'Empleados';
     protected static ?string $navigationLabel = 'Empleados';
     protected static ?string $navigationGroup = 'Usuarios';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
@@ -63,7 +63,7 @@ class EmployeeResource extends Resource
         return $form
             ->schema([
 
-                Section::make('Sobre tu Información Personal')->columns(3)
+                Section::make('Sobre tu Información Personal')->columns(4)
                     ->description('Tus datos personales son importantes para validar tu relación al condominio')
                     ->schema([
                         Forms\Components\TextInput::make('name')->label('Nombre y Apellido')
@@ -79,7 +79,7 @@ class EmployeeResource extends Resource
                             ->required()->tel()->length(9)
                             ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/'),
 
-                        Forms\Components\Select::make('country')->label('País')
+                        Forms\Components\Select::make('country')->label('Nacionalidad')
                             ->required()->placeholder('Selecciona una opción'),
 
                         Forms\Components\Select::make('doc_type')->label('Tipo de Documento')
@@ -131,8 +131,8 @@ class EmployeeResource extends Resource
                         fn (User $record): string => "{$record->doc_type} {$record->document}"),
 
                 Tables\Columns\TextColumn::make('email')->label('Contacto')
-                ->searchable()->wrap()->description(
-                        fn (User $record): string => $record->cellphone),
+                    ->searchable()->wrap()->description(
+                        fn (User $record): string => "+51 $record->cellphone"),
 
                 Tables\Columns\TextColumn::make('role.name')->label('Área')
                     ->searchable()->badge()->color(
@@ -169,14 +169,19 @@ class EmployeeResource extends Resource
                         '5' => 'Supervisor',
                         '6' => 'Administrador',
                         '7' => 'Gerente',
-                    ]) //TODO: AJUSTAR FACTORIES Y SEEDERS CON ESTOS IDs DE ROLES, EVITAR DUPLICADOS
+                    ])
             ])
 
 
             ->actions([
-                Tables\Actions\EditAction::make()->label(''),
-                Tables\Actions\DeleteAction::make()->label(''),
+                Tables\Actions\ViewAction::make()->label(''),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->label('Editar'),
+                    Tables\Actions\DeleteAction::make()->label('Borrar'),
+                ])->iconButton()->color('gray')->size('lg')->tooltip('Acciones')
             ])
+
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

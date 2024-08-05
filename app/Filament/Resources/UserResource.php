@@ -35,9 +35,11 @@ class UserResource extends Resource
 {
     protected static ?int $navigationSort = 1;
     protected static ?string $model = User::class;
-    protected static ?string $navigationGroup = 'Usuarios';
-    protected static ?string $navigationLabel = 'Residentes';
+
     protected static ?string $slug = 'residentes';
+    protected static ?string $label = 'Residentes';
+    protected static ?string $navigationLabel = 'Residentes';
+    protected static ?string $navigationGroup = 'Usuarios';
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function getEloquentQuery(): Builder
@@ -61,11 +63,11 @@ class UserResource extends Resource
         return $form
             ->schema([
 
-                Section::make('Sobre tu Información Personal')->columns(3)
+                Section::make('Sobre tu Información Personal')->columns(4)
                     ->description('Tus datos personales son importantes para validar tu relación al condominio')
                     ->schema([
                         Forms\Components\TextInput::make('name')->label('Nombre y Apellido')
-                            ->required()->autofocus(),
+                            ->required(),
 
                         Forms\Components\TextInput::make('email')->label('Correo')
                             ->email()->required()->unique(table: User::class),
@@ -77,7 +79,7 @@ class UserResource extends Resource
                             ->required()->tel()->length(9)
                             ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/'),
 
-                        Forms\Components\Select::make('country')->label('País')
+                        Forms\Components\Select::make('country')->label('Nacionalidad')
                             ->options(function () { return self::getCountriesList(); })
                             ->required()->placeholder('Selecciona una opción'),
 
@@ -123,9 +125,9 @@ class UserResource extends Resource
 
                 Tables\Columns\TextColumn::make('email')->label('Contacto')
                     ->searchable()->wrap()->description(
-                        fn (User $record): string => $record->cellphone),
+                        fn (User $record): string => "+51 $record->cellphone"),
 
-                Tables\Columns\TextColumn::make('role.name')->label('Área')
+                Tables\Columns\TextColumn::make('role.name')->label('Rol')
                     ->searchable()->badge()->color(
                         fn (string $state): string => match ($state) {
                         'Residente' => 'gray', 'Vigilante' => 'info',
@@ -160,9 +162,14 @@ class UserResource extends Resource
 
 
             ->actions([
-                Tables\Actions\EditAction::make()->label(''),
-                Tables\Actions\DeleteAction::make()->label(''),
+                Tables\Actions\ViewAction::make()->label(''),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->label('Editar'),
+                    Tables\Actions\DeleteAction::make()->label('Borrar'),
+                ])->iconButton()->color('gray')->size('lg')->tooltip('Acciones')
             ])
+
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

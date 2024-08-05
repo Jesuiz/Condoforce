@@ -31,7 +31,7 @@ use Filament\Tables\Columns\TextColumn;
 
 class ReportResource extends Resource
 {
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
     protected static ?string $model = Report::class;
 
     protected static ?string $slug = 'incidencias';

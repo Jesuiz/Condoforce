@@ -7,10 +7,10 @@ use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
 
+
 class CreateInventory extends CreateRecord
 {
     protected static string $resource = InventoryResource::class;
-
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {

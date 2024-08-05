@@ -19,5 +19,3 @@ yarn-error.log
 /.idea
 /.vscode
 /consultas
-/app/Filament
-/app/Filament/**

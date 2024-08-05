@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 
 class ListTasks extends ListRecords
@@ -24,12 +25,14 @@ class ListTasks extends ListRecords
         return [
             // Creamos y notificamos el cambio de status de una actividad
             Actions\Action::make('changeStatus')->label('Cambiar Status')
+                ->modalHeading('Cambiar el status de una Actividad')
+                ->modalIcon('heroicon-o-arrow-path')
                 ->color('info')->icon('heroicon-o-arrow-path')
                 ->form([
                     Select::make('name')->label('Selecciona la actividad a modificar')
                         ->required()
                         ->placeholder('Selecciona una opción')
-                        ->options(Task::query()->pluck('name', 'id')),
+                        ->options(Task::query()->where('user_id', Auth::user()->id)->pluck('name', 'id')),
 
                     Select::make('status')->label('¿Cuánto será el nuevo status?')
                         ->required()

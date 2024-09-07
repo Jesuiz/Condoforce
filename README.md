@@ -1,5 +1,6 @@
 ## Banner
-![](public\images\banner.png)
+![](https://github.com/Jesuiz/Condoforce/blob/main/public/images/BANNER.png)
+<a href="public/images/BANNER.png" target="_blank">
 
 
 # Introducción de Condoforce
@@ -15,13 +16,13 @@ Este sistema ofrece una solución integral para la gestión profesional de condo
 
 
 ## Módulo de Empleados
-![](public\readme_img\AdminPanel - Empleados.webp)
+<a href="public/readme_img/AdminPanel - Empleados.webp" target="_blank">
 
 ## Módulo de Condominios
-![](public\readme_img\AdminPanel - Condominios.webp)
+<a href="public/readme_img/AdminPanel - Condominios.webp" target="_blank">
 
 ## Módulo de Inventario
-![](public\readme_img\AdminPanel - Inventario.webp)
+<a href="public/readme_img/AdminPanel - Inventario.webp" target="_blank">
 
 
 ## Acceso a la Demo

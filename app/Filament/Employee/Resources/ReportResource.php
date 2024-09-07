@@ -37,7 +37,6 @@ class ReportResource extends Resource
     protected static ?string $slug = 'incidencias';
     protected static ?string $label = 'Incidencias';
     protected static ?string $navigationLabel = 'Incidencias';
-    protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     public static function getEloquentQuery(): Builder

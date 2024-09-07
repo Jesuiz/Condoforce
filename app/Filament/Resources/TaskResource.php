@@ -43,7 +43,7 @@ class TaskResource extends Resource
     protected static ?string $slug = 'actividades';
     protected static ?string $label = 'Actividades';
     protected static ?string $navigationLabel = 'Actividades';
-    protected static ?string $navigationGroup = 'Condominios';
+    protected static ?string $navigationGroup = 'Gestión de Condominios';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     
     public static function form(Form $form): Form

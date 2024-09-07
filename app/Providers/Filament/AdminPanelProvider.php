@@ -17,6 +17,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Kenepa\Banner\BannerPlugin;
+use Illuminate\Support\Facades\Blade;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -28,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->profile()
             ->colors([ 'primary' => Color::Blue ])
+            ->brandLogo(asset('images\logo.svg'))->brandLogoHeight('2.5rem')->favicon(asset('images/favicon.svg'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -49,9 +53,13 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->databaseNotifications()
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->databaseNotifications()
+            ->plugins([
+                BannerPlugin::make()
+                    ->persistsBannersInDatabase()
             ]);
     }
 }

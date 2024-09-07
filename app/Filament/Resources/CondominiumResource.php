@@ -33,7 +33,7 @@ class CondominiumResource extends Resource
     protected static ?string $slug = 'condominios';
     protected static ?string $label = 'Condominios';
     protected static ?string $navigationLabel = 'Condominios';
-    protected static ?string $navigationGroup = 'Condominios';
+    protected static ?string $navigationGroup = 'Gestión de Condominios';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
 

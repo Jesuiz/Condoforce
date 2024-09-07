@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="LOGO" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 497.82 464.3">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f6f6f6;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: url(#Degradado_sin_nombre_23);
+      }
+    </style>
+    <linearGradient id="Degradado_sin_nombre_23" data-name="Degradado sin nombre 23" x1="-14.76" y1="417.69" x2="551.74" y2="19.05" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a22c3"/>
+      <stop offset="1" stop-color="#0153ff"/>
+    </linearGradient>
+  </defs>
+  <rect class="cls-2" width="497.82" height="464.3" rx="50" ry="50"/>
+  <g id="CUSTOM-Form1">
+    <path class="cls-1" d="M219.11,269.4l20.94-15.28v171.61h-20.94v-156.32ZM355.46,219.73v-81.66L219.11,38.57v178.7l-23.27,16.98v-96.13L41.36,250.86v174.87h20.94v-164.23l112.6-82.17v70.21l-66.77,48.72v127.46h87.71v-139.34l-20.94,15.28v103.12h-45.83v-95.88l110.98-80.99V79.78l94.47,68.94v55.73l-64.9-47.36v268.64h20.94v-227.43l144.96,105.79v100.7h-80.06v-132.93l-20.94-15.28v169.15h121.94v-132.29l-101-73.71Z"/>
+  </g>
+</svg>

@@ -40,7 +40,6 @@ class InventoryResource extends Resource
     protected static ?string $slug = 'inventario';
     protected static ?string $label = 'Inventario';
     protected static ?string $navigationLabel = 'Inventario';
-    protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getEloquentQuery(): Builder

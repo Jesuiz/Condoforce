@@ -43,7 +43,6 @@ class TaskResource extends Resource
     protected static ?string $slug = 'actividades';
     protected static ?string $label = 'Actividades';
     protected static ?string $navigationLabel = 'Actividades';
-    protected static ?string $navigationGroup = 'Condominio';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function getEloquentQuery(): Builder

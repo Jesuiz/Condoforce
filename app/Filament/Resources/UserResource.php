@@ -39,7 +39,7 @@ class UserResource extends Resource
     protected static ?string $slug = 'residentes';
     protected static ?string $label = 'Residentes';
     protected static ?string $navigationLabel = 'Residentes';
-    protected static ?string $navigationGroup = 'Usuarios';
+    protected static ?string $navigationGroup = 'Gestión de Usuarios';
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function getEloquentQuery(): Builder

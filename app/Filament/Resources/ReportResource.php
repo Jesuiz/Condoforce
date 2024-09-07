@@ -37,7 +37,7 @@ class ReportResource extends Resource
     protected static ?string $slug = 'incidencias';
     protected static ?string $label = 'Incidencias';
     protected static ?string $navigationLabel = 'Incidencias';
-    protected static ?string $navigationGroup = 'Condominios';
+    protected static ?string $navigationGroup = 'Gestión de Condominios';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
 

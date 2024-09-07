@@ -38,7 +38,7 @@ class EmployeeResource extends Resource
     protected static ?string $slug = 'empleados';
     protected static ?string $label = 'Empleados';
     protected static ?string $navigationLabel = 'Empleados';
-    protected static ?string $navigationGroup = 'Usuarios';
+    protected static ?string $navigationGroup = 'Gestión de Usuarios';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
     public static function getEloquentQuery(): Builder

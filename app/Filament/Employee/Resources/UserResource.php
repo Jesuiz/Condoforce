@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Employee\Resources;
 
 use App\Models\User;
 use App\Models\Occupation;
@@ -62,9 +62,8 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-
                 Section::make('Sobre tu Información Personal')->columns(4)
-                    ->description('Tus datos personales son importantes para validar tu relación al condominio')
+                    ->description('Sus datos personales son importantes para validar tu relación al condominio')
                     ->schema([
                         Forms\Components\TextInput::make('name')->label('Nombre y Apellido')
                             ->required(),
@@ -92,14 +91,13 @@ class UserResource extends Resource
                             ->required()->numeric()->length(8)->unique(table: User::class),
 
                         Forms\Components\Select::make('roles')->label('Rol de Usuario')
-                            /* ->options(['Administrador' => 'Administrador', 'Empleado' => 'Empleado',
-                            'Residente' => 'Residente']) */
-                            ->relationship('roles', 'name')
+                            ->options(['Administrador' => 'Administrador', 'Empleado' => 'Empleado',
+                            'Residente' => 'Residente'])
                             ->required()->preload()->live()->placeholder('Selecciona una opción'),
                     ]),
 
                 Section::make('Sobre el Condominio')->columns(3)
-                    ->description('Los detalles sobre tu ocupación dentro del Condominio son esenciales para la seguridad de todos')
+                    ->description('Los detalles sobre su ocupación dentro del Condominio son esenciales para la seguridad de todos')
                     ->schema([
                         Forms\Components\Select::make('condominium_id')->label('Condominio Asignado')
                             ->required()->relationship(name:'condominium', titleAttribute:'name')

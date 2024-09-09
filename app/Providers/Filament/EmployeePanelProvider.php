@@ -17,6 +17,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Shanerbaner82\PanelRoles\PanelRoles;
 
 class EmployeePanelProvider extends PanelProvider
 {
@@ -29,8 +30,8 @@ class EmployeePanelProvider extends PanelProvider
             ->login()
             ->profile()
             ->colors([ 'primary' => Color::Blue ])
-            ->brandLogo(asset('images\logo.svg'))->brandLogoHeight('2.5rem')->favicon(asset('images/favicon.svg'))
             ->collapsibleNavigationGroups(false)
+            ->brandLogo(asset('images\logo.svg'))->brandLogoHeight('2.5rem')->favicon(asset('images/favicon.svg'))
             ->discoverResources(in: app_path('Filament/Employee/Resources'), for: 'App\\Filament\\Employee\\Resources')
             ->discoverPages(in: app_path('Filament/Employee/Pages'), for: 'App\\Filament\\Employee\\Pages')
             ->pages([
@@ -54,6 +55,10 @@ class EmployeePanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->plugin(PanelRoles::make()
+                ->roleToAssign('empleado')
+                ->restrictedRoles(['superadmin', 'administrador', 'empleado']),
+            );
     }
 }

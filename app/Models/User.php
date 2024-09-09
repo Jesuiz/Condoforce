@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class User extends Authenticatable
 {
@@ -17,7 +19,6 @@ class User extends Authenticatable
     protected $table = 'users';
     protected $fillable = ['name','email','password','country','doc_type','document','cellphone','address','profile_img','condominium_id','occupation_id','is_active'];
     protected $hidden = ['password','remember_token',];
-
 
     protected static function boot()
     {
@@ -29,7 +30,6 @@ class User extends Authenticatable
             }
         });
     }
-
     protected function casts(): array
     {
         return [
@@ -37,22 +37,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
     public function condominium()
     {
         return $this->belongsTo(Condominium::class);
     }
-    
-
     public function occupation()
     {
         return $this->belongsTo(Occupation::class);
     }
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-    
 }

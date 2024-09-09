@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\User;
@@ -9,99 +8,50 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function view(?User $user)
     {
-        return $user->can('view_any_user');
+        if ($user->published) {
+            return true;
+        }
+
+        // visitors cannot view unpublished items
+        if ($user === null) {
+            return false;
+        }
+
+        // admin overrides published status
+        if ($user->can('view unpublished user')) {
+            return true;
+        }
+
+        // authors can view their own unpublished user
+        return $user->id == $user->user_id;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user): bool
+    public function create(User $user)
     {
-        return $user->can('view_user');
+        return ($user->can('create user'));
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function update(User $user)
     {
-        return $user->can('create_user');
+        if ($user->can('edit all user')) {
+            return true;
+        }
+
+        if ($user->can('edit own user')) {
+            return $user->id == $user->user_id;
+        }
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user): bool
+    public function delete(User $user)
     {
-        return $user->can('update_user');
-    }
+        if ($user->can('delete any user')) {
+            return true;
+        }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user): bool
-    {
-        return $user->can('delete_user');
-    }
-
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
-    {
-        return $user->can('delete_any_user');
-    }
-
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user): bool
-    {
-        return $user->can('force_delete_user');
-    }
-
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
-    {
-        return $user->can('force_delete_any_user');
-    }
-
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user): bool
-    {
-        return $user->can('restore_user');
-    }
-
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
-    {
-        return $user->can('restore_any_user');
-    }
-
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user): bool
-    {
-        return $user->can('replicate_user');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
-    {
-        return $user->can('reorder_user');
+        if ($user->can('delete own user')) {
+            return $user->id == $user->user_id;
+        }
     }
 }

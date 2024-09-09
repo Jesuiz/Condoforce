@@ -1,108 +1,58 @@
 <?php
-
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Report;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ReportPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function view(?User $user, Report $report)
     {
-        return $user->can('view_any_report');
+        if ($report->published) {
+            return true;
+        }
+
+        // visitors cannot view unpublished items
+        if ($user === null) {
+            return false;
+        }
+
+        // admin overrides published status
+        if ($user->can('view unpublished report')) {
+            return true;
+        }
+
+        // authors can view their own unpublished report
+        return $user->id == $report->user_id;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Report $report): bool
+    public function create(User $user)
     {
-        return $user->can('view_report');
+        return ($user->can('create report'));
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function update(User $user, Report $report)
     {
-        return $user->can('create_report');
+        if ($user->can('edit all report')) {
+            return true;
+        }
+
+        if ($user->can('edit own report')) {
+            return $user->id == $report->user_id;
+        }
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Report $report): bool
+    public function delete(User $user, Report $report)
     {
-        return $user->can('update_report');
-    }
+        if ($user->can('delete any report')) {
+            return true;
+        }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Report $report): bool
-    {
-        return $user->can('delete_report');
-    }
-
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
-    {
-        return $user->can('delete_any_report');
-    }
-
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, Report $report): bool
-    {
-        return $user->can('force_delete_report');
-    }
-
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
-    {
-        return $user->can('force_delete_any_report');
-    }
-
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, Report $report): bool
-    {
-        return $user->can('restore_report');
-    }
-
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
-    {
-        return $user->can('restore_any_report');
-    }
-
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, Report $report): bool
-    {
-        return $user->can('replicate_report');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
-    {
-        return $user->can('reorder_report');
+        if ($user->can('delete own report')) {
+            return $user->id == $report->user_id;
+        }
     }
 }

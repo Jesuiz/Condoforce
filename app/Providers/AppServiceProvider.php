@@ -22,33 +22,20 @@ use App\Models\Task;
 use App\Policies\TaskPolicy;
 use App\Models\User;
 use App\Policies\UserPolicy;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
+        //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
         };
-        
-
-        // Register the Policy for every Model
-        $this->app->bind(RoleContract::class, Role::class);
-        $this->app->bind('filament.role.policy', \App\Policies\RolePolicy::class);
-
-        $this->app->bind(PermissionContract::class, Permission::class);
-        $this->app->bind('filament.permission.policy', \App\Policies\PermissionPolicy::class);
-
 
         FilamentColor::register([
             'gray' => Color::Zinc,
@@ -73,20 +60,3 @@ class AppServiceProvider extends ServiceProvider
 
     }
 }
-
-
-/* 
-        $this->app->bind(Condominium::class, Condominium::class);
-        $this->app->bind('filament.condominium.policy', \App\Policies\CondominiumPolicy::class);
-
-        $this->app->bind(Inventory::class, Inventory::class);
-        $this->app->bind('filament.inventory.policy', \App\Policies\InventoryPolicy::class);
-
-        $this->app->bind(Occupation::class, Occupation::class);
-        $this->app->bind('filament.occupation.policy', \App\Policies\OccupationPolicy::class);
-
-        $this->app->bind(Report::class, Report::class);
-        $this->app->bind('filament.report.policy', \App\Policies\ReportPolicy::class);
-
-        $this->app->bind(Task::class, Task::class);
-        $this->app->bind('filament.task.policy', \App\Policies\TaskPolicy::class); */

@@ -17,6 +17,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Shanerbaner82\PanelRoles\PanelRoles;
 
 class ResidentPanelProvider extends PanelProvider
 {
@@ -27,9 +28,9 @@ class ResidentPanelProvider extends PanelProvider
             ->path('residente')
             ->login()
             ->profile()
-            ->colors([
-                'primary' => Color::Amber,
-            ])
+            ->colors([ 'primary' => Color::Amber ])
+            ->collapsibleNavigationGroups(false)
+            ->brandLogo(asset('images\logo.svg'))->brandLogoHeight('2.5rem')->favicon(asset('images/favicon.svg'))
             ->discoverResources(in: app_path('Filament/Resident/Resources'), for: 'App\\Filament\\Resident\\Resources')
             ->discoverPages(in: app_path('Filament/Resident/Pages'), for: 'App\\Filament\\Resident\\Pages')
             ->pages([
@@ -53,6 +54,10 @@ class ResidentPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->plugin(PanelRoles::make()
+                ->roleToAssign('residente')
+                ->restrictedRoles(['superadmin', 'administrador', 'residente']),
+            );
     }
 }

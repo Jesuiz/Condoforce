@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Models\User;
-use App\Models\Role;
+use App\Models\Occupation;
 use App\Models\Condominium;
 use App\Models\Inventory;
 use App\Models\Report;
@@ -43,7 +43,7 @@ class EmployeeResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->whereIn('role_id', [3,4,5,6,7]);
+        return parent::getEloquentQuery()->whereIn('occupation_id', [3,4,5,6,7]);
     }
 
     public static function getCountriesList()
@@ -99,8 +99,8 @@ class EmployeeResource extends Resource
                             ->required()->relationship(name:'condominium', titleAttribute:'name')
                             ->preload()->live()->placeholder('Selecciona una opción'),
 
-                        Forms\Components\Select::make('role_id')->label('Area')
-                            ->required()->relationship(name:'role', titleAttribute:'name')
+                        Forms\Components\Select::make('occupation_id')->label('Area')
+                            ->required()->relationship(name:'occupation', titleAttribute:'name')
                             ->preload()->live()->placeholder('Selecciona una opción'),
                     ]),
 
@@ -134,7 +134,7 @@ class EmployeeResource extends Resource
                     ->searchable()->wrap()->description(
                         fn (User $record): string => "+51 $record->cellphone"),
 
-                Tables\Columns\TextColumn::make('role.name')->label('Área')
+                Tables\Columns\TextColumn::make('occupation.name')->label('Área')
                     ->searchable()->badge()->color(
                         fn (string $state): string => match ($state) {
                         'Residente' => 'gray', 'Delegado' => 'gray',
@@ -152,7 +152,7 @@ class EmployeeResource extends Resource
                     ->searchable()->wrap()->description(
                         fn (User $record): string => "{$record->condominium->address}"),
 
-                Tables\Columns\TextColumn::make('role.salary')->label('Salario')
+                Tables\Columns\TextColumn::make('occupation.salary')->label('Salario')
                     ->numeric(decimalPlaces:0)->prefix('S/ ')->color('success')->icon('heroicon-m-currency-dollar'),
 
                 ])
@@ -162,7 +162,7 @@ class EmployeeResource extends Resource
                 SelectFilter::make('condominium')->label('Condominio')
                     ->relationship('condominium', 'name'),
 
-                SelectFilter::make('role_id')->label('Área')
+                SelectFilter::make('occupation_id')->label('Área')
                     ->options([
                         '3' => 'Vigilante',
                         '4' => 'Mantenimiento',
@@ -207,6 +207,6 @@ class EmployeeResource extends Resource
 
     /* public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::whereIn('role_id', [3,4,5,6,7])->count();
+        return static::getModel()::whereIn('occupation_id', [3,4,5,6,7])->count();
     } */
 }

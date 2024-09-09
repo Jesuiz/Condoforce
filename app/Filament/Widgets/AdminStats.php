@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\User;
-use App\Models\Role;
+use App\Models\Occupation;
 use App\Models\Condominium;
 use App\Models\Inventory;
 use App\Models\Report;

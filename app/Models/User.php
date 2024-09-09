@@ -3,17 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
     
     protected $table = 'users';
-    protected $fillable = ['name','email','password','country','doc_type','document','cellphone','address','profile_img','condominium_id','role_id','is_active'];
+    protected $fillable = ['name','email','password','country','doc_type','document','cellphone','address','profile_img','condominium_id','occupation_id','is_active'];
     protected $hidden = ['password','remember_token',];
 
 
@@ -22,8 +24,8 @@ class User extends Authenticatable
         parent::boot();
 
         static::creating(function ($user) {
-            if (!$user->role_id) {
-                $user->role_id = Role::where('name', 'Residente')->first()->id;
+            if (!$user->occupation_id) {
+                $user->occupation_id = Occupation::where('name', 'Residente')->first()->id;
             }
         });
     }
@@ -35,7 +37,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
 
     public function condominium()
     {
@@ -43,8 +44,15 @@ class User extends Authenticatable
     }
     
 
+    public function occupation()
+    {
+        return $this->belongsTo(Occupation::class);
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
+
+    
 }

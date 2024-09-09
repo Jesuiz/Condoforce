@@ -26,8 +26,8 @@ return new class extends Migration
             $table->unsignedBigInteger('condominium_id');
             $table->foreign('condominium_id')->references('id')->on('condominiums')->onDelete('cascade');
             
-            $table->unsignedBigInteger('role_id');
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->unsignedBigInteger('occupation_id');
+            $table->foreign('occupation_id')->references('id')->on('occupation')->onDelete('cascade');
 
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_active')->nullable()->default(true);

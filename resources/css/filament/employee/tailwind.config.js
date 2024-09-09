@@ -6,6 +6,5 @@ export default {
         './app/Filament/Employee/**/*.php',
         './resources/views/filament/employee/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
-        './vendor/kenepa/banner/resources/**/*.php',
     ],
 }

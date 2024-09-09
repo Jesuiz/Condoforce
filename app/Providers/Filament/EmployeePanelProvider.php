@@ -17,8 +17,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Kenepa\Banner\BannerPlugin;
-
 
 class EmployeePanelProvider extends PanelProvider
 {
@@ -27,7 +25,7 @@ class EmployeePanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('employee')
-            ->path('employee')
+            ->path('empleado')
             ->login()
             ->profile()
             ->colors([ 'primary' => Color::Blue ])
@@ -40,8 +38,8 @@ class EmployeePanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Employee/Widgets'), for: 'App\\Filament\\Employee\\Widgets')
             ->widgets([
-                /* Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class, */
+                /* Widgets\AccountWidget::class, */
+                /* Widgets\FilamentInfoWidget::class, */
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -56,11 +54,6 @@ class EmployeePanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->databaseNotifications()
-            ->plugins([
-                BannerPlugin::make()
-                    ->persistsBannersInDatabase()
             ]);
     }
 }

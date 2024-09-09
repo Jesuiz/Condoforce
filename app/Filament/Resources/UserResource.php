@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Models\User;
-use App\Models\Role;
+use App\Models\Occupation;
 use App\Models\Condominium;
 use App\Models\Inventory;
 use App\Models\Report;
@@ -44,7 +44,7 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->whereIn('role_id', [1,2]);
+        return parent::getEloquentQuery()->whereIn('occupation_id', [1,2]);
     }
 
     public static function getCountriesList()
@@ -62,6 +62,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('roles')->multiple()->relationship('roles', 'name'),
 
                 Section::make('Sobre tu Información Personal')->columns(4)
                     ->description('Tus datos personales son importantes para validar tu relación al condominio')
@@ -99,8 +100,8 @@ class UserResource extends Resource
                             ->required()->relationship(name:'condominium', titleAttribute:'name')
                             ->preload()->live()->placeholder('Selecciona una opción'),
 
-                        Forms\Components\Select::make('role_id')->label('Area')
-                            ->required()->relationship(name:'role', titleAttribute:'name')
+                        Forms\Components\Select::make('occupation_id')->label('Area')
+                            ->required()->relationship(name:'occupation', titleAttribute:'name')
                             ->preload()->live()->placeholder('Selecciona una opción'),
                     ]),
             ]);
@@ -127,7 +128,7 @@ class UserResource extends Resource
                     ->searchable()->wrap()->description(
                         fn (User $record): string => "+51 $record->cellphone"),
 
-                Tables\Columns\TextColumn::make('role.name')->label('Rol')
+                Tables\Columns\TextColumn::make('occupation.name')->label('Rol')
                     ->searchable()->badge()->color(
                         fn (string $state): string => match ($state) {
                         'Residente' => 'gray', 'Vigilante' => 'info',
@@ -150,7 +151,7 @@ class UserResource extends Resource
                 SelectFilter::make('condominium')->label('Condominio')
                     ->relationship('condominium', 'name'),
 
-                SelectFilter::make('role_id')->label('Área')
+                SelectFilter::make('occupation_id')->label('Área')
                     ->options([
                         '3' => 'Vigilante',
                         '4' => 'Mantenimiento',
@@ -195,6 +196,6 @@ class UserResource extends Resource
 
 /*     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::whereIn('role_id', [1,2])->count();
+        return static::getModel()::whereIn('occupation_id', [1,2])->count();
     } */
 }

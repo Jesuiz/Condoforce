@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rule;
 
-class Role extends Model
+class Occupation extends Model
 {
     use HasFactory;
 
-    protected $table = 'roles';
+    protected $table = 'occupation';
     protected $fillable = ['name', 'salary'];
     public static $areas = ['Residente', 'Delegado', 'Vigilante', 'Supervisor', 'Mantenimiento', 'Administrador', 'Gerente'];
 

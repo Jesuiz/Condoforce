@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Condominium;
-use App\Models\Role;
+use App\Models\Occupation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'profile_img' => $avatarUrl,
             'condominium_id' => function () {
                 return \App\Models\Condominium::inRandomOrder()->first()->id; },
-            'role_id' => Role::inRandomOrder()->first()->id,
+            'occupation_id' => Occupation::inRandomOrder()->first()->id,
 
             'email_verified_at' => now(),
             'is_active' => $this->faker->boolean(),
@@ -42,7 +42,7 @@ class UserFactory extends Factory
 /*     public function configure()
     {
         return $this->afterCreating(function (User $user) {
-            Role::create([
+            Occupation::create([
                 'name' => $this->faker->randomElement(['Residente', 'Vigilante', 'Mantenimiento', 'Supervisor', 'Delegado', 'Administrador', 'Gerente']),
                 'salary' => $this->faker->randomFloat(2, 1000, 5000),
             ]);

@@ -17,15 +17,12 @@ Este sistema ofrece una solución integral para la gestión profesional de condo
 
 ## Módulo de Empleados
 ![](https://raw.githubusercontent.com/Jesuiz/Condoforce/main/public/readme_img/AdminPanel%20-%20Empleados.webp)
-<a href="public/readme_img/AdminPanel - Empleados.webp" target="_blank">
 
 ## Módulo de Condominios
 ![](https://raw.githubusercontent.com/Jesuiz/Condoforce/main/public/readme_img/AdminPanel%20-%20Condominios.webp)
-<a href="public/readme_img/AdminPanel - Condominios.webp" target="_blank">
 
 ## Módulo de Inventario
 ![](https://raw.githubusercontent.com/Jesuiz/Condoforce/main/public/readme_img/EmployeePanel%20-%20Inventario.webp)
-<a href="public/readme_img/AdminPanel - Inventario.webp" target="_blank">
 
 
 ## Acceso a la Demo
